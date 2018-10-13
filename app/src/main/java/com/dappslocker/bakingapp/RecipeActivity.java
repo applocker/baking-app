@@ -1,8 +1,10 @@
 package com.dappslocker.bakingapp;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,8 +15,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
+import com.dappslocker.bakingapp.datasource.network.RetrofitClient;
+import com.dappslocker.bakingapp.model.Recipe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RecipeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "RecipeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +54,8 @@ public class RecipeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        testRetrofit();
     }
 
     @Override
@@ -97,5 +113,38 @@ public class RecipeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void testRetrofit() {
+        GetRecipeDataService service = RetrofitClient.getRetrofitInstance().create(GetRecipeDataService.class);
+        Call<ArrayList<Recipe>> call =
+                service.getRecipies();
+        call.enqueue(new Callback<ArrayList<Recipe>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Recipe>> call, @NonNull Response<ArrayList<Recipe>> response) {
+                if(response.isSuccessful()){
+                    displayUserReviewListResponseData(response.body());
+                }
+                else{
+                    displayUserReviewListResponseData(null);
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Recipe>> call, @NonNull Throwable t) {
+                Log.d(TAG,"inside onFailure(): network error" );
+                displayUserReviewListResponseData(null);
+            }
+        });
+
+    }
+
+
+    private void displayUserReviewListResponseData(ArrayList<Recipe> recipes) {
+        if (recipes != null) {
+            //mUserReviewAdapter.setUserReviews(userReviewList.getUserReviews());
+            Log.d(TAG,"Recipe count = " + recipes.size());
+        } else {
+            //showMessage("There are no user reviews yet");
+        }
     }
 }
