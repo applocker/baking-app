@@ -1,24 +1,34 @@
 package com.dappslocker.bakingapp.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tiwuya on 10,October,2018
- */
+@Entity(tableName = "recipes")
 public class Recipe {
+    @PrimaryKey
     @SerializedName("id")
-    Integer id;
+    int id;
+
     @SerializedName("name")
     String name;
+
+    @ColumnInfo(name = "ingredients")
     @SerializedName("ingredients")
     ArrayList<Ingredients> listOfIngredients;
+
+    @ColumnInfo(name = "steps")
     @SerializedName("steps")
     ArrayList<Step> listOfSteps;
+
     @SerializedName("servings")
     Integer servings;
+
     @SerializedName("image")
     String image;
 

@@ -1,7 +1,10 @@
 package com.dappslocker.bakingapp;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -18,6 +21,7 @@ import android.view.MenuItem;
 import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
 import com.dappslocker.bakingapp.datasource.network.RetrofitClient;
 import com.dappslocker.bakingapp.model.Recipe;
+import com.dappslocker.bakingapp.viewmodels.RecipeActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +59,27 @@ public class RecipeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        testRetrofit();
+        //testRetrofit();
+        setupViewModel();
     }
 
+    private void setupViewModel() {
+        RecipeActivityViewModel viewModel = ViewModelProviders.of(this).get(RecipeActivityViewModel.class);
+        viewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(@Nullable List<Recipe> recipes) {
+                if(recipes!= null){
+                    Log.d(TAG,"Recipe count = " + recipes.size());
+                    for (Recipe recipe : recipes) {
+                        Log.d(TAG,"Recipe Name: " + recipe.getName()+ "\n");
+                    }
+                }
+                else{
+                    Log.d(TAG,"There was an errror while retrieving the resource");
+                }
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -95,7 +117,7 @@ public class RecipeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        //Todo: customise template c
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
@@ -141,10 +163,12 @@ public class RecipeActivity extends AppCompatActivity
 
     private void displayUserReviewListResponseData(ArrayList<Recipe> recipes) {
         if (recipes != null) {
-            //mUserReviewAdapter.setUserReviews(userReviewList.getUserReviews());
             Log.d(TAG,"Recipe count = " + recipes.size());
+            for (Recipe recipe : recipes) {
+                Log.d(TAG,"Recipe Name: " + recipe.getName()+ "\n");
+            }
         } else {
-            //showMessage("There are no user reviews yet");
+            Log.d(TAG,"There was an errror while retrieving the resource");
         }
     }
 }

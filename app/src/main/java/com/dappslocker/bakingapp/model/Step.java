@@ -2,17 +2,7 @@ package com.dappslocker.bakingapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Tiwuya on 10,October,2018
- */
 class Step {
-
-/*    "id":0,
-            "shortDescription":"Recipe Introduction",
-            "description":"Recipe Introduction",
-            "videoURL":"https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4",
-            "thumbnailURL":""*/
-
     @SerializedName("id")
     Integer id;
     @SerializedName("shortDescription")

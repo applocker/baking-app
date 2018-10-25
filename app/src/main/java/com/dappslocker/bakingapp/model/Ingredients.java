@@ -2,9 +2,6 @@ package com.dappslocker.bakingapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Tiwuya on 10,October,2018
- */
 class Ingredients {
     @SerializedName("quantity")
     float quantity;
