@@ -23,9 +23,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
+    implementation "com.android.support:design:${supportLibVersion}"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation "com.android.support:recyclerview-v7:${supportLibVersion}"
+    implementation "com.android.support:cardview-v7:${supportLibVersion}"
     //test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -35,16 +37,19 @@ dependencies {
     //retrofit dependencies
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    //butter dependencies
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
      // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
-    testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '3.2.0'
-/*
-    testImplementation "org.powermock:powermock-core:${powerMockitoVersion}"
-    testImplementation "org.powermock:powermock-api-mockito:${powerMockitoVersion}"
-    testImplementation "org.powermock:powermock-module-junit4-rule-agent:${powerMockitoVersion}"
-    testImplementation "org.powermock:powermock-module-junit4-rule:${powerMockitoVersion}"
-    testImplementation "org.powermock:powermock-module-junit4:${powerMockitoVersion}"
- */
+     //testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '3.2.0'
+     /*
+     testImplementation "org.powermock:powermock-core:${powerMockitoVersion}"
+     testImplementation "org.powermock:powermock-api-mockito:${powerMockitoVersion}"
+     testImplementation "org.powermock:powermock-module-junit4-rule-agent:${powerMockitoVersion}"
+     testImplementation "org.powermock:powermock-module-junit4-rule:${powerMockitoVersion}"
+     testImplementation "org.powermock:powermock-module-junit4:${powerMockitoVersion}"
+     */
 
     // use Gson for type converters
     implementation 'com.google.code.gson:gson:2.8.5'

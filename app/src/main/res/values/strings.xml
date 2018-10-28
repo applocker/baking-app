@@ -6,4 +6,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="meal">meal</string>
+
+    <string name="image_content_description">Recipe loading error</string>
+    <string name="error_message">There was an error while loading the recipes please click refresh to try again</string>
+
+    <string name="menu_refresh">Refresh recipes</string>
 </resources>

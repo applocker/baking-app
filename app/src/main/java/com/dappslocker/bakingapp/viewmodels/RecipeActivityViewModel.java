@@ -16,7 +16,7 @@ import java.util.List;
 public class RecipeActivityViewModel extends AndroidViewModel {
     private static final String TAG = RecipeActivityViewModel.class.getSimpleName();
     private static RecipesRepository mRecipesRepository;
-    private final MutableLiveData<List<Recipe>> mRecipes;
+    private static MutableLiveData<List<Recipe>> mRecipes;
 
     public RecipeActivityViewModel(@NonNull Application application) {
         super(application);
@@ -31,4 +31,8 @@ public class RecipeActivityViewModel extends AndroidViewModel {
         return mRecipes;
     }
 
+    public void refreshData() {
+        mRecipesRepository.refreshRecipes();
+        mRecipes = mRecipesRepository.getRecipes();
+    }
 }

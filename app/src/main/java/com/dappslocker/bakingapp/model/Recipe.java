@@ -16,21 +16,21 @@ public class Recipe {
     int id;
 
     @SerializedName("name")
-    String name;
+    private String name;
 
     @ColumnInfo(name = "ingredients")
     @SerializedName("ingredients")
-    ArrayList<Ingredients> listOfIngredients;
+    private ArrayList<Ingredients> listOfIngredients;
 
     @ColumnInfo(name = "steps")
     @SerializedName("steps")
-    ArrayList<Step> listOfSteps;
+    private ArrayList<Step> listOfSteps;
 
     @SerializedName("servings")
-    Integer servings;
+    private Integer servings;
 
     @SerializedName("image")
-    String image;
+    private String image;
 
     public Integer getId() {
         return id;
