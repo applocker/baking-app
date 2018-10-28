@@ -16,7 +16,6 @@ import java.util.List;
 
 
 class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterViewHolder> {
-
     private final static String TAG = RecipeAdapter.class.getSimpleName();
     private static List<Recipe> RecipeList;
     private final RecipeAdapterOnClickHandler mClickHandler;
@@ -33,8 +32,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterView
     public RecipeAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_recipe, parent, false);
-        RecipeAdapterViewHolder viewHolder = new RecipeAdapterViewHolder(v);
-        return viewHolder;
+        return  new RecipeAdapterViewHolder(v);
     }
 
     @Override
@@ -78,7 +76,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterView
             mClickHandler.onClick(adapterPosition);
         }
 
-        public void loadRecipe(int position) {
+        void loadRecipe(int position) {
             textViewRecipeName.setText(RecipeList.get(position).getName());
         }
     }

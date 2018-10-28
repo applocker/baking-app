@@ -25,7 +25,7 @@
     <dimen name="corner_radius_small">6dp</dimen>
     <dimen name="corner_radius_medium">12dp</dimen>
     <dimen name="corner_radius_large">18dp</dimen>
-    <dimen name="elevation_small">3dp</dimen>
+    <dimen name="elevation_small">1dp</dimen>
 
     <dimen name="horizontal_margin_large">32dp</dimen>
     <dimen name="vertical_margin_large">32dp</dimen>

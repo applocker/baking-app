@@ -13,7 +13,7 @@ import java.util.List;
 public class Recipe {
     @PrimaryKey
     @SerializedName("id")
-    int id;
+    private int id;
 
     @SerializedName("name")
     private String name;
