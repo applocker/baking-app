@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
 import com.dappslocker.bakingapp.datasource.network.RetrofitClient;
@@ -36,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RecipeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, RecipeAdapter.RecipeAdapterOnClickHandler {
+        implements NavigationView.OnNavigationItemSelectedListener, MasterListFragment.OnRecipeClickedListener {
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view) RecyclerView mRecylerGridView;
     @SuppressWarnings("WeakerAccess")
@@ -52,35 +54,26 @@ public class RecipeActivity extends AppCompatActivity
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_error_loading_message)   TextView mErrorLoadingMessage;
 
-
-
     private static final String TAG = "RecipeActivity";
-    private  RecipeAdapter mRecipeAdapter;
+    private MasterListFragment mMasterFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
+        mMasterFragment = (MasterListFragment) getSupportFragmentManager().findFragmentById(R.id.master_list_fragment);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
-
         navigationView.setNavigationItemSelectedListener(this);
-        mRecipeAdapter = new RecipeAdapter(new ArrayList<Recipe>(),this);
-        mRecylerGridView.setAdapter(mRecipeAdapter);
-        GridLayoutManager layoutManager;
-        //Todo: change grid span based on device and configuration
-        layoutManager = new GridLayoutManager(this,1,GridLayoutManager.VERTICAL,false) ;
-        mRecylerGridView.setLayoutManager(layoutManager);
-        //testRetrofit();
         setupViewModel();
+        //testRetrofit();
     }
 
     private void setupViewModel() {
-        //Completed: Add a progress indicator before fetching startRecipeLoadingIndicator()
         startRecipesLoadingIndicator();
         RecipeActivityViewModel viewModel = ViewModelProviders.of(this).get(RecipeActivityViewModel.class);
         viewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
@@ -98,7 +91,7 @@ public class RecipeActivity extends AppCompatActivity
                     Log.d(TAG,"There was an errror while retrieving the resource");
                     displayErrorMessage();
                 }
-                mRecipeAdapter.setRecipeList(recipes);
+                mMasterFragment.setRecipeList(recipes);
             }
         });
     }
@@ -141,7 +134,7 @@ public class RecipeActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.menu_item_refresh) {
             //reset the adapter data
-            mRecipeAdapter.setRecipeList(null);
+            mMasterFragment.setRecipeList(null);
             //reload data
             startRecipesLoadingIndicator();
             RecipeActivityViewModel viewModel = ViewModelProviders.of(this).get(RecipeActivityViewModel.class);
@@ -214,9 +207,12 @@ public class RecipeActivity extends AppCompatActivity
         }
     }
 
+
     @Override
-    public void onClick(int position) {
+    public void onRecipeClicked(int position) {
         //Todo: start recipe detail activity
+        //Todo: add espresso test to verify the intent to start activity is callled
+        Toast.makeText(this,"Recipe at position :" + position + " was clicked",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onClick starting detail activity ...");
 
     }

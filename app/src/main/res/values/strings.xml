@@ -12,4 +12,7 @@
     <string name="error_message">There was an error while loading the recipes please click refresh to try again</string>
 
     <string name="menu_refresh">Refresh recipes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
