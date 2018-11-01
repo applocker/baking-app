@@ -3,25 +3,23 @@ package com.dappslocker.bakingapp;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
-import com.dappslocker.bakingapp.repository.RecipesDataSource;
-import com.dappslocker.bakingapp.repository.RecipesRepository;
 import com.dappslocker.bakingapp.datasource.network.RemoteRecipesDataSource;
 import com.dappslocker.bakingapp.model.Recipe;
+import com.dappslocker.bakingapp.repository.RecipesDataSource;
+import com.dappslocker.bakingapp.repository.RecipesRepository;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-
 import java.util.List;
-
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -36,10 +34,11 @@ import static org.mockito.Mockito.verify;
 public class RecipeRepositoryTest {
 
     @Mock
+    private
     RecipesDataSource recipesRemoteDataSource;
 
     @Mock
-    RecipesDataSource localDataSource;
+    private RecipesDataSource localDataSource;
 
     @Mock
     private Context contextMock;
@@ -54,6 +53,12 @@ public class RecipeRepositoryTest {
         recipesRepository = null;
     }
 
+    @After
+    public void reset(){
+        recipesRemoteDataSource = null;
+        localDataSource = null;
+        contextMock = null;
+    }
     @Test
     public void DummyTestToCheck_IsTestSetup_ReturnsTrue() {
         assertThat(RemoteRecipesDataSource.isTestSetup("test"), is(true));
@@ -78,27 +83,35 @@ public class RecipeRepositoryTest {
         LiveData<List<Recipe>> mCachedRecipes = recipesRepository.getRecipes();
         //Then
         assertThat(recipesRepository,is(not(nullValue())));
-        assertEquals(null,mCachedRecipes);
+        assertThat(mCachedRecipes.getValue(),is(nullValue()));
     }
 
-    @Test
-    public void testt(){
-        recipesRepository = RecipesRepository.getInstance(contextMock,recipesRemoteDataSource,localDataSource);
-        recipesRepository.refreshRecipes();
-        recipesRepository.getRecipes();
-        verify(recipesRemoteDataSource, times(1)).getRecipes();
-    }
+
     @Test
     public void whenGetRecipesIsCalledAndCacheIsDirtyThenA_RemoteDataSourceGetRecipiesIsInvoked(){
+        final BooleanWrapper remoteDataSourceInvoked = new BooleanWrapper();
+        remoteDataSourceInvoked.setInvoked(false);
         doAnswer(new Answer<Void>() {
             public Void answer(InvocationOnMock invocation) {
-                int i = 1;
-                assertEquals(1,i);
+                remoteDataSourceInvoked.setInvoked(true);
+                assertEquals(true, remoteDataSourceInvoked.isInvoked());
                 return null;
             }}).when(recipesRemoteDataSource).getRecipes();
         recipesRepository = RecipesRepository.getInstance(contextMock,recipesRemoteDataSource,localDataSource);
         recipesRepository.refreshRecipes();
+        recipesRepository.setmRecipesRemoteDataSource(recipesRemoteDataSource);
         recipesRepository.getRecipes();
         verify(recipesRemoteDataSource, times(1)).getRecipes();
+
+    }
+
+    private class BooleanWrapper{
+        private boolean isInvoked;
+        public boolean isInvoked() {
+            return isInvoked;
+        }
+        public void setInvoked(boolean invoked) {
+            isInvoked = invoked;
+        }
     }
 }

@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +27,9 @@ import android.widget.Toast;
 
 import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
 import com.dappslocker.bakingapp.datasource.network.RetrofitClient;
+import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 import com.dappslocker.bakingapp.model.Recipe;
+import com.dappslocker.bakingapp.viewmodels.AddRecipeViewModelFactory;
 import com.dappslocker.bakingapp.viewmodels.RecipeActivityViewModel;
 
 import java.util.ArrayList;
@@ -56,6 +60,8 @@ public class RecipeActivity extends AppCompatActivity
 
     private static final String TAG = "RecipeActivity";
     private MasterListFragment mMasterFragment;
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +75,15 @@ public class RecipeActivity extends AppCompatActivity
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        getIdlingResource();
         setupViewModel();
         //testRetrofit();
     }
 
     private void setupViewModel() {
         startRecipesLoadingIndicator();
-        RecipeActivityViewModel viewModel = ViewModelProviders.of(this).get(RecipeActivityViewModel.class);
+        AddRecipeViewModelFactory factory = new AddRecipeViewModelFactory(getApplication(),mIdlingResource);
+        RecipeActivityViewModel viewModel = ViewModelProviders.of(this,factory).get(RecipeActivityViewModel.class);
         viewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(@Nullable List<Recipe> recipes) {
@@ -215,5 +223,14 @@ public class RecipeActivity extends AppCompatActivity
         Toast.makeText(this,"Recipe at position :" + position + " was clicked",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onClick starting detail activity ...");
 
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
     }
 }

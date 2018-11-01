@@ -30,6 +30,14 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
      */
      boolean mCacheIsDirty = false;
 
+    public RecipesDataSource getmRecipesRemoteDataSource() {
+        return mRecipesRemoteDataSource;
+    }
+
+    public void setmRecipesRemoteDataSource(RecipesDataSource mRecipesRemoteDataSource) {
+        this.mRecipesRemoteDataSource = mRecipesRemoteDataSource;
+    }
+
     // Prevent direct instantiation.
     private RecipesRepository(Context application,RecipesDataSource remote, RecipesDataSource localDatabase){
         mRecipesRemoteDataSource = remote;
@@ -61,10 +69,9 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
     public MutableLiveData<List<Recipe>> getRecipes() {
         if(mCachedRecipes == null){
             mCachedRecipes = new MutableLiveData<>();
-            mCacheIsDirty = true;
         }
         // Respond immediately with cache if available and not dirty
-        if (mCachedRecipes != null && !mCacheIsDirty) {
+        if (!mCacheIsDirty) {
             return mCachedRecipes;
         }
         if (mCacheIsDirty) {

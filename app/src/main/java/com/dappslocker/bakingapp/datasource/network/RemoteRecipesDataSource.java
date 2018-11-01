@@ -1,8 +1,10 @@
 package com.dappslocker.bakingapp.datasource.network;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 import com.dappslocker.bakingapp.repository.DataSource.LoadRecipeCallback;
 import com.dappslocker.bakingapp.repository.RecipesDataSource;
 import com.dappslocker.bakingapp.model.Recipe;
@@ -21,14 +23,17 @@ public class RemoteRecipesDataSource implements RecipesDataSource {
     private LoadRecipeCallback mCallback;
     private GetRecipeDataService service;
     private  Call<ArrayList<Recipe>> call;
+    @Nullable
+    private final SimpleIdlingResource mIdlingResource;
 
-    RemoteRecipesDataSource(){
+    private RemoteRecipesDataSource(@Nullable SimpleIdlingResource simpleIdlingResource){
         service = getService();
+        mIdlingResource = simpleIdlingResource;
     }
 
-    public static RemoteRecipesDataSource getInstance() {
+    public static RemoteRecipesDataSource getInstance(@Nullable SimpleIdlingResource simpleIdlingResource) {
         if (INSTANCE == null) {
-            INSTANCE = new RemoteRecipesDataSource();
+            INSTANCE = new RemoteRecipesDataSource(simpleIdlingResource);
         }
         return INSTANCE;
     }
@@ -61,6 +66,11 @@ public class RemoteRecipesDataSource implements RecipesDataSource {
     private void loadFromNetwork() {
         call = service.getRecipies();
         call.enqueue(new Callback<ArrayList<Recipe>>() {
+            {
+                if (mIdlingResource != null) {
+                    mIdlingResource.setIdleState(false);
+                }
+            }
             @Override
             public void onResponse(@NonNull Call<ArrayList<Recipe>> call, @NonNull Response<ArrayList<Recipe>> response) {
                 if(response.isSuccessful()){
@@ -84,6 +94,10 @@ public class RemoteRecipesDataSource implements RecipesDataSource {
                     mCallback.onDataNotAvailable(DataSourceIdentifers.NETWORK);
                     Log.d(TAG, "retrieving movie from the network was not sucessfull");
                 }
+                if (mIdlingResource != null) {
+                    mIdlingResource.setIdleState(true);
+                }
+
             }
         });
     }

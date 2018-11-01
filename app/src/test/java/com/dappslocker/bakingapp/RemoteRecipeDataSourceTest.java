@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
 import com.dappslocker.bakingapp.datasource.network.RemoteRecipesDataSource;
+import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.repository.DataSource.LoadRecipeCallback;
 
@@ -52,14 +53,15 @@ public class RemoteRecipeDataSourceTest {
 
         Mockito.doAnswer(new Answer() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 Callback<ArrayList<Recipe>> callback = invocation.getArgument(0);
                 callback.onResponse(mockedCall, Response.success(new ArrayList<Recipe>()));
                 return null;
             }
         }).when(mockedCall).enqueue((Callback<ArrayList<Recipe>>) Mockito.<List<Recipe>>any());
 
-        remoteRecipesDataSource = RemoteRecipesDataSource.getInstance();
+        SimpleIdlingResource simpleIdlingResource = null;
+        remoteRecipesDataSource = RemoteRecipesDataSource.getInstance(simpleIdlingResource);
         // inject mocks
         remoteRecipesDataSource.setLoadRecipeCallBack(callBack);
         remoteRecipesDataSource.setService(mockedService);
@@ -80,7 +82,7 @@ public class RemoteRecipeDataSourceTest {
 
         Mockito.doAnswer(new Answer() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 Callback<ArrayList<Recipe>> callback = invocation.getArgument(0);
                 callback.onResponse(mockedCall, Response.<ArrayList<Recipe>>error(404, new ResponseBody() {
                     @Nullable
@@ -103,7 +105,8 @@ public class RemoteRecipeDataSourceTest {
             }
         }).when(mockedCall).enqueue((Callback<ArrayList<Recipe>>) Mockito.<List<Recipe>>any());
 
-        remoteRecipesDataSource = RemoteRecipesDataSource.getInstance();
+        SimpleIdlingResource simpleIdlingResource = null;
+        remoteRecipesDataSource = RemoteRecipesDataSource.getInstance(simpleIdlingResource);
         // inject mocks
         remoteRecipesDataSource.setLoadRecipeCallBack(callBack);
         remoteRecipesDataSource.setService(mockedService);

@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.0.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -26,7 +26,16 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 27
-    targetSdkVersion = 27
-    supportLibVersion = "27.1.1"
+    compileSdkVersion = 26
+    targetSdkVersion = 26
+    supportLibVersion = "26.1.0"
+    espressoVersion = "3.0.1"
+    coreVersion = "1.0.0"
+    extJUnitVersion = "1.0.0"
+    runnerVersion = "0.5"
+    //runnerVersion = "1.1.0"
+    //espressoVersion = "3.1.0"
+    //compileSdkVersion = 27
+    // espressoVersion = "3.1.0"
+    //espressoVersion = "3.0.2"
 }
