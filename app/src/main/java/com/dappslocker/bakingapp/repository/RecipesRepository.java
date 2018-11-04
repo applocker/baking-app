@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 
+import com.dappslocker.bakingapp.datasource.database.LocalRecipesDataSource;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.utility.DataSourceUtils.DataSourceIdentifers;
 
@@ -18,7 +19,7 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
 
     private RecipesDataSource mRecipesRemoteDataSource;
 
-     //Todo: private RecipesDataSource mRecipesLocalDataSource;
+    private RecipesDataSource mRecipesLocalDataSource;
 
     private static final String TAG = "RecipesRepository";
 
@@ -30,21 +31,13 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
      */
      boolean mCacheIsDirty = false;
 
-    public RecipesDataSource getmRecipesRemoteDataSource() {
-        return mRecipesRemoteDataSource;
-    }
-
-    public void setmRecipesRemoteDataSource(RecipesDataSource mRecipesRemoteDataSource) {
-        this.mRecipesRemoteDataSource = mRecipesRemoteDataSource;
-    }
 
     // Prevent direct instantiation.
     private RecipesRepository(Context application,RecipesDataSource remote, RecipesDataSource localDatabase){
         mRecipesRemoteDataSource = remote;
         mRecipesRemoteDataSource.setLoadRecipeCallBack(this); //set the call backs
-        //Todo: mRecipesLocalDataSource = localDatabase;
-        //Todo: mRecipesLocalDataSource = setLoadRecipeCallBack(this);  //set the call backs
-
+        mRecipesLocalDataSource = localDatabase;
+        mRecipesLocalDataSource.setLoadRecipeCallBack(this);  //set the call backs
     }
 
     /**
@@ -67,25 +60,35 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
 
     @Override
     public MutableLiveData<List<Recipe>> getRecipes() {
-        if(mCachedRecipes == null){
+/*        if(mCachedRecipes == null){
             mCachedRecipes = new MutableLiveData<>();
-        }
+        }*/
         // Respond immediately with cache if available and not dirty
-        if (!mCacheIsDirty) {
+        if (!mCacheIsDirty && !(mCachedRecipes == null)) {
             return mCachedRecipes;
         }
         if (mCacheIsDirty) {
             // If the cache is dirty we need to fetch new data from the network.
             getRecipesFromRemoteDataSource();
         } else {
-          //todo: query device database
-           Log.d(TAG, "querying device database for recipies");
+            getRecipesFromLocalDataSource();
         }
         return mCachedRecipes;
     }
 
+    private void getRecipesFromLocalDataSource() {
+        initCacheIfNull();
+        mRecipesLocalDataSource.getRecipes();
+    }
+
     private void getRecipesFromRemoteDataSource() {
+        initCacheIfNull();
         mRecipesRemoteDataSource.getRecipes();
+    }
+    private void initCacheIfNull() {
+        if(mCachedRecipes == null){
+            mCachedRecipes = new MutableLiveData<>();
+        }
     }
 
     /***
@@ -94,7 +97,10 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
     @Override
     public void onRecipeLoaded(List<Recipe> recipes, DataSourceIdentifers dataSourceIdentifier) {
         refreshCache(recipes);
-        refreshLocalDataSources(recipes);
+        if(dataSourceIdentifier == DataSourceIdentifers.NETWORK){
+            refreshLocalDataSources(recipes);
+        }
+
     }
 
     /**
@@ -117,8 +123,7 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
     }
 
     private void refreshLocalDataSources(List<Recipe> recipes) {
-        //Todo: clear the database
-        //Todo: insert the new values in the database
+        ((LocalRecipesDataSource)mRecipesLocalDataSource).deleteAllAndInsert(recipes);
     }
 
     @Override
@@ -131,5 +136,23 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
         return true;
     }
 
+    public RecipesDataSource getRecipesRemoteDataSource() {
+        return mRecipesRemoteDataSource;
+    }
 
+    public void setRecipesRemoteDataSource(RecipesDataSource mRecipesRemoteDataSource) {
+        this.mRecipesRemoteDataSource = mRecipesRemoteDataSource;
+    }
+
+    public RecipesDataSource getRecipesLocalDataSource() {
+        return mRecipesLocalDataSource;
+    }
+
+    public void setRecipesLocalDataSource(RecipesDataSource mRecipesLocalDataSource) {
+        this.mRecipesLocalDataSource = mRecipesLocalDataSource;
+    }
+
+    public boolean isCacheIsDirty() {
+        return mCacheIsDirty;
+    }
 }

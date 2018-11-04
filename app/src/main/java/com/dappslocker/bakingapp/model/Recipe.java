@@ -48,7 +48,7 @@ public class Recipe {
         this.name = name;
     }
 
-    public List<Ingredients> getListOfIngredients() {
+    public ArrayList<Ingredients> getListOfIngredients() {
         return listOfIngredients;
     }
 
@@ -56,7 +56,7 @@ public class Recipe {
         this.listOfIngredients = listOfIngredients;
     }
 
-    public List<Step> getListOfSteps() {
+    public ArrayList<Step> getListOfSteps() {
         return listOfSteps;
     }
 

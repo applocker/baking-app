@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -76,14 +77,14 @@ public class RecipeRepositoryTest {
     }
 
     @Test
-    public void whenGetRecipesIsCalledInitiallyThenA_NullListOfRecipiesIsReturned(){
+    public void whenGetRecipesIsCalledThenA_CacheIsReturned(){
         //given
         recipesRepository = RecipesRepository.getInstance(contextMock,recipesRemoteDataSource,localDataSource);
         //When
         LiveData<List<Recipe>> mCachedRecipes = recipesRepository.getRecipes();
         //Then
         assertThat(recipesRepository,is(not(nullValue())));
-        assertThat(mCachedRecipes.getValue(),is(nullValue()));
+        assertThat(mCachedRecipes,is(not(nullValue())));
     }
 
 
@@ -99,10 +100,23 @@ public class RecipeRepositoryTest {
             }}).when(recipesRemoteDataSource).getRecipes();
         recipesRepository = RecipesRepository.getInstance(contextMock,recipesRemoteDataSource,localDataSource);
         recipesRepository.refreshRecipes();
-        recipesRepository.setmRecipesRemoteDataSource(recipesRemoteDataSource);
+        recipesRepository.setRecipesRemoteDataSource(recipesRemoteDataSource);
         recipesRepository.getRecipes();
         verify(recipesRemoteDataSource, times(1)).getRecipes();
 
+    }
+
+    @Test
+    public void whenGetRecipesIsCalledAndCacheIsNotDirtyThenA_LocalDataSourceGetRecipiesIsInvoked(){
+        RecipesDataSource localDataSourceSpy = Mockito.spy(localDataSource);
+        Mockito.doNothing().when(localDataSourceSpy).getRecipes();
+        recipesRepository = RecipesRepository.getInstance(contextMock,recipesRemoteDataSource,localDataSource);
+        recipesRepository.setRecipesRemoteDataSource(recipesRemoteDataSource);
+        recipesRepository.setRecipesLocalDataSource(localDataSource);
+        recipesRepository.getRecipes();
+        verify(recipesRemoteDataSource, times(0)).getRecipes();
+        verify(localDataSourceSpy, times(0)).getRecipes();
+        assertEquals(false,recipesRepository.isCacheIsDirty());
     }
 
     private class BooleanWrapper{

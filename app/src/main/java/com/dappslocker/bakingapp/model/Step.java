@@ -2,7 +2,7 @@ package com.dappslocker.bakingapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class Step {
+public class Step {
     @SerializedName("id")
     Integer id;
     @SerializedName("shortDescription")

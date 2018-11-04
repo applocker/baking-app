@@ -2,7 +2,7 @@ package com.dappslocker.bakingapp.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class Ingredients {
+public class Ingredients {
     @SerializedName("quantity")
     float quantity;
     @SerializedName("measure")
