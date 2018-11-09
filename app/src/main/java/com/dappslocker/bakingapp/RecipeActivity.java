@@ -2,24 +2,20 @@ package com.dappslocker.bakingapp;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -41,24 +37,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecipeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MasterListFragment.OnRecipeClickedListener {
+public class RecipeActivity extends BaseActivity
+        implements  MasterListFragment.OnRecipeClickedListener {
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.recycler_view) RecyclerView mRecylerGridView;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecylerGridView;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawer;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadingIndicator;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.nav_view)  NavigationView  navigationView;
+    @BindView(R.id.error_loading_indicator)
+    LinearLayout mErrorLoadingRecipes;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.pb_loading_indicator)  ProgressBar mLoadingIndicator;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.error_loading_indicator)   LinearLayout mErrorLoadingRecipes;
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textView_error_loading_message)   TextView mErrorLoadingMessage;
+    @BindView(R.id.textView_error_loading_message)
+    TextView mErrorLoadingMessage;
 
     private static final String TAG = "RecipeActivity";
+    private static final String RECIPE_ID = "recipe_id";
     private MasterListFragment mMasterFragment;
     @Nullable
     private SimpleIdlingResource mIdlingResource;
@@ -66,15 +61,10 @@ public class RecipeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe);
+        FrameLayout frameLayout = getMasterFragmentContainer();
+        getLayoutInflater().inflate(R.layout.activity_recipe,frameLayout);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         mMasterFragment = (MasterListFragment) getSupportFragmentManager().findFragmentById(R.id.master_list_fragment);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
         getIdlingResource();
         setupViewModel();
         //testRetrofit();
@@ -118,14 +108,6 @@ public class RecipeActivity extends AppCompatActivity
         mRecylerGridView.setVisibility(View.INVISIBLE);
         mErrorLoadingRecipes.setVisibility(View.VISIBLE);
     }
-    @Override
-    public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,30 +137,6 @@ public class RecipeActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        //Todo: customise template c
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        mDrawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private void testRetrofit() {
@@ -222,7 +180,9 @@ public class RecipeActivity extends AppCompatActivity
         //Todo: add espresso test to verify the intent to start activity is callled
         Toast.makeText(this,"Recipe at position :" + position + " was clicked",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onClick starting detail activity ...");
-
+        Intent intent = new Intent(getApplicationContext(), RecipeDetailActivity.class);
+        intent.putExtra(RECIPE_ID,position);
+        this.startActivity(intent);
     }
 
     @VisibleForTesting

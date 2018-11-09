@@ -5,27 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".RecipeActivity"
+    tools:context=".BaseActivity"
     tools:showIn="@layout/app_bar_recipe">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/layout_margin_8"
-        android:layout_marginEnd="@dimen/layout_margin_8"
-        android:layout_marginLeft="@dimen/layout_margin_8"
-        android:layout_marginRight="@dimen/layout_margin_8"
-        android:layout_marginStart="@dimen/layout_margin_8"
-        android:layout_marginTop="@dimen/layout_margin_8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/list_item_recipe" />
-
-    <include layout="@layout/load_recipe" />
-
-
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
