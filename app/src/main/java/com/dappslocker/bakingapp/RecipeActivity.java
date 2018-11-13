@@ -10,8 +10,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.support.design.widget.NavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +38,7 @@ import retrofit2.Response;
 public class RecipeActivity extends BaseActivity
         implements  MasterListFragment.OnRecipeClickedListener {
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.recycler_view)
+    @BindView(R.id.recycler_view_recipe)
     RecyclerView mRecylerGridView;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.pb_loading_indicator)
@@ -176,9 +174,9 @@ public class RecipeActivity extends BaseActivity
 
     @Override
     public void onRecipeClicked(int position) {
-        //Todo: start recipe detail activity
-        //Todo: add espresso test to verify the intent to start activity is callled
-        Toast.makeText(this,"Recipe at position :" + position + " was clicked",Toast.LENGTH_SHORT).show();
+        //Completed: start recipe detail activity
+        //Completed: add espresso test to verify the intent to start activity is callled
+        //Toast.makeText(this,"Recipe at position :" + position + " was clicked",Toast.LENGTH_SHORT).show();
         Log.d(TAG,"onClick starting detail activity ...");
         Intent intent = new Intent(getApplicationContext(), RecipeDetailActivity.class);
         intent.putExtra(RECIPE_ID,position);

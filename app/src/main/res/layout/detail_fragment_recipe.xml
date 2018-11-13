@@ -7,13 +7,21 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".RecipeDetailActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_recipe_detail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/layout_margin_8"
+        android:layout_marginEnd="@dimen/layout_margin_8"
+        android:layout_marginLeft="@dimen/layout_margin_8"
+        android:layout_marginRight="@dimen/layout_margin_8"
+        android:layout_marginStart="@dimen/layout_margin_8"
+        android:layout_marginTop="@dimen/layout_margin_8"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/list_item_recipe_detail" />
 
 </android.support.constraint.ConstraintLayout>

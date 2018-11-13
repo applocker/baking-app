@@ -52,14 +52,14 @@ public class RecipeActivityTest {
 
     @Test
     public void RecyclerViewThatHoldsListOfRecipesIsDisplayed() {
-        onView(ViewMatchers.withId(R.id.recycler_view)).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.recycler_view_recipe)).check(matches(isDisplayed()));
     }
 
     @Test
     public void FirstItemofTheListHasRecpeTextDisplayed() {
         // First, scroll to the position.
         final int FIRST_ITEM = 0;
-        onView(ViewMatchers.withId(R.id.recycler_view))
+        onView(ViewMatchers.withId(R.id.recycler_view_recipe))
                 .perform(RecyclerViewActions.scrollToPosition(FIRST_ITEM));
 
         // Check that the item has the special text.
@@ -73,7 +73,7 @@ public class RecipeActivityTest {
         final String RECIPE_ID = "recipe_id";
         final int FIRST_ITEM = 0;
         Matcher intent = allOf(hasExtra(RECIPE_ID,FIRST_ITEM));
-        onView(ViewMatchers.withId(R.id.recycler_view))
+        onView(ViewMatchers.withId(R.id.recycler_view_recipe))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(FIRST_ITEM,click()));
 
         // Check that the intent was launched.

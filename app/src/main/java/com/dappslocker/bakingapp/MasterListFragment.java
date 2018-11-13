@@ -27,7 +27,8 @@ import butterknife.ButterKnife;
 public class MasterListFragment extends Fragment implements  RecipeAdapter.RecipeAdapterOnClickHandler {
 
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.recycler_view)     RecyclerView mRecylerGridView;
+    @BindView(R.id.recycler_view_recipe)
+    RecyclerView mRecylerGridView;
 
     private OnRecipeClickedListener mListener;
     private static final String TAG = "MasterListFragment";

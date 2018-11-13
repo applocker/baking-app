@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- customize for Ingridents -->
+    <LinearLayout
+        android:id="@+id/item_recipe_ingredients_container"
+        android:layout_marginBottom="@dimen/layout_margin_8"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/item_recipe_ingredients"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/textSize_small"
+            tools:text="@tools:sample/lorem" />
+    </LinearLayout>
+
+   <!-- customize for steps -->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_recipe_steps_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewStep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="@dimen/textSize_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="99" />
+
+        <TextView
+            android:id="@+id/textViewStepDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonPlayVideo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewStep"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButtonPlayVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textViewStepDescription"
+            app:layout_constraintStart_toStartOf="@+id/textViewStep"
+            app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+    </android.support.constraint.ConstraintLayout>
+<!--
+    <TextView
+        android:id="@+id/item_recipe_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/textSize_small"
+        tools:text="@tools:sample/lorem" />
+-->
+
+</LinearLayout>
