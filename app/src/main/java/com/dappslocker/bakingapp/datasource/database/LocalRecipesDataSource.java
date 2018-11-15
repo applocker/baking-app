@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.repository.DataSource.LoadRecipeCallback;
 import com.dappslocker.bakingapp.repository.RecipesDataSource;
@@ -38,22 +39,28 @@ public class LocalRecipesDataSource implements RecipesDataSource {
         loadFromLocalDatabase();
     }
 
-    public void getRecipe(Integer recipeId) {
-        loadFromLocalDatabase(recipeId);
+    public void getRecipe(Integer recipeId, SimpleIdlingResource idlingResource) {
+        loadFromLocalDatabase(recipeId,idlingResource);
     }
 
 
     /**
      * Make a room call to read recipies from the local database and notify the invoker via callback
      */
-    private void loadFromLocalDatabase(final Integer recipeId) {
+    private void loadFromLocalDatabase(final Integer recipeId, final SimpleIdlingResource idlingResource) {
         mAppExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
+                if(idlingResource != null){
+                    idlingResource.setIdleState(false);
+                }
                 Recipe recipe = recipesDao.getRecipe(recipeId.intValue());
                 if( recipe != null){
                     mCallback.onRecipeLoaded(recipe, DataSourceUtils.DataSourceIdentifers.DATABASE);
                     Log.d(TAG, "retrieving recipe from the database was sucessfull");
+                }
+                if (idlingResource != null) {
+                    idlingResource.setIdleState(true);
                 }
             }
         });

@@ -21,6 +21,7 @@ public class RecipeActivityViewModel extends ViewModel {
     private static RecipesRepository mRecipesRepository;
     private static MutableLiveData<List<Recipe>> mRecipes;
 
+
     public RecipeActivityViewModel(@NonNull Application application, @Nullable SimpleIdlingResource simpleIdlingResource) {
         RemoteRecipesDataSource remoteRecipesDataSource = RemoteRecipesDataSource.getInstance(simpleIdlingResource);
         LocalRecipesDataSource localRecipesDataSource = LocalRecipesDataSource.getInstance(application);
@@ -37,4 +38,5 @@ public class RecipeActivityViewModel extends ViewModel {
         mRecipesRepository.refreshRecipes();
         mRecipes = mRecipesRepository.getRecipes();
     }
+
 }

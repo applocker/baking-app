@@ -4,7 +4,10 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -55,5 +58,9 @@ public class RecipeDetailActivity extends AppCompatActivity  {
         NavUtils.navigateUpFromSameTask(this);
     }
 
-
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        return viewModel.getIdlingResource();
+    }
 }

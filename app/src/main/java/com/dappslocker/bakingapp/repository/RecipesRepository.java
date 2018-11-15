@@ -4,9 +4,11 @@ package com.dappslocker.bakingapp.repository;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.dappslocker.bakingapp.datasource.database.LocalRecipesDataSource;
+import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.utility.DataSourceUtils.DataSourceIdentifers;
 
@@ -25,8 +27,8 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
 
     MutableLiveData<List<Recipe>> mCachedRecipes;
 
-
     MutableLiveData<Recipe> mMmutableRecipe;
+
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -76,9 +78,9 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
         return mCachedRecipes;
     }
 
-    public LiveData<Recipe> getRecipe(Integer recipeId) {
+    public LiveData<Recipe> getRecipe(Integer recipeId, @Nullable SimpleIdlingResource idlingResource) {
         mMmutableRecipe = new MutableLiveData<>();
-        ((LocalRecipesDataSource)mRecipesLocalDataSource).getRecipe(recipeId);
+        ((LocalRecipesDataSource)mRecipesLocalDataSource).getRecipe(recipeId,idlingResource);
         return  mMmutableRecipe;
     }
 
@@ -116,7 +118,6 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
     public void onRecipeLoaded(Recipe recipe, DataSourceIdentifers dataSourceIdentifier) {
         if(dataSourceIdentifier == DataSourceIdentifers.DATABASE){
             if (mMmutableRecipe != null) {
-                //mMmutableRecipe = new MutableLiveData<>();
                 mMmutableRecipe.postValue(recipe);
                 Log.d(TAG,"inside onRecipeLoaded() recipe returned from database");
             }
