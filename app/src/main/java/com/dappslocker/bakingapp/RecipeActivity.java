@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
 import com.dappslocker.bakingapp.datasource.network.RetrofitClient;
@@ -52,6 +51,7 @@ public class RecipeActivity extends BaseActivity
 
     private static final String TAG = "RecipeActivity";
     private static final String RECIPE_ID = "recipe_id";
+    private static final String RECIPE_NAME = "recipe_title";
     private MasterListFragment mMasterFragment;
     @Nullable
     private SimpleIdlingResource mIdlingResource;
@@ -173,13 +173,11 @@ public class RecipeActivity extends BaseActivity
 
 
     @Override
-    public void onRecipeClicked(int position) {
-        //Completed: start recipe detail activity
-        //Completed: add espresso test to verify the intent to start activity is callled
-        //Toast.makeText(this,"Recipe at position :" + position + " was clicked",Toast.LENGTH_SHORT).show();
+    public void onRecipeClicked(Recipe recipe) {
         Log.d(TAG,"onClick starting detail activity ...");
         Intent intent = new Intent(getApplicationContext(), RecipeDetailActivity.class);
-        intent.putExtra(RECIPE_ID,position);
+        intent.putExtra(RECIPE_ID,recipe.getId());
+        intent.putExtra(RECIPE_NAME,recipe.getName());
         this.startActivity(intent);
     }
 

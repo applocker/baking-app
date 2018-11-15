@@ -1,22 +1,24 @@
 package com.dappslocker.bakingapp;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.FrameLayout;
 
 import com.dappslocker.bakingapp.model.Recipe;
-
-import butterknife.ButterKnife;
+import com.dappslocker.bakingapp.viewmodels.AddRecipeDetailViewModelFactory;
+import com.dappslocker.bakingapp.viewmodels.RecipeDetailActivityViewModel;
 
 public class RecipeDetailActivity extends AppCompatActivity  {
     private static final String TAG = "RecipeDetailActivity";
     DetailListFragment detailListFragment;
     private static final String RECIPE_ID = "recipe_id";
-    private  Recipe mRecipeAtPosition;
+    private static final String RECIPE_NAME = "recipe_title";
+    private RecipeDetailActivityViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,17 +29,24 @@ public class RecipeDetailActivity extends AppCompatActivity  {
         }
         detailListFragment = (DetailListFragment) getSupportFragmentManager().findFragmentById(R.id.detail_list_fragment);
         Intent intent = getIntent();
-        if(intent.hasExtra(RECIPE_ID)){
-            int position = intent.getIntExtra(RECIPE_ID,0);
-            mRecipeAtPosition = RecipeAdapter.getRecipeAtPosition(position);
-            Log.d(TAG,"inside onCreate(): retrieved " + mRecipeAtPosition.getName());
-            detailListFragment.setRecipe(mRecipeAtPosition);
+        if(intent.hasExtra(RECIPE_ID)&&intent.hasExtra(RECIPE_NAME)){
+            Integer recipeId = intent.getIntExtra(RECIPE_ID,0);
+            actionBar.setTitle(intent.getStringExtra(RECIPE_NAME));
+            setupViewModel(recipeId);
         }
 
     }
 
-    Recipe getRecipeAtPosition() {
-        return mRecipeAtPosition;
+    private void setupViewModel(Integer reciPeId) {
+        AddRecipeDetailViewModelFactory factory = new AddRecipeDetailViewModelFactory(getApplication(),reciPeId);
+        viewModel = ViewModelProviders.of(this,factory).get(RecipeDetailActivityViewModel.class);
+        viewModel.getRecipe().observe(this, new Observer<Recipe>() {
+            @Override
+            public void onChanged(@Nullable Recipe recipe) {
+                detailListFragment.setRecipe(recipe);
+            }
+        });
+
     }
 
     @Override

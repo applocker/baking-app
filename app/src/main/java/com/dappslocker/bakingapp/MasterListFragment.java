@@ -92,7 +92,9 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
      */
     @Override
     public void onClick(int position) {
-        mListener.onRecipeClicked(position);
+        //get the recipe id for the recipe at this position
+        Recipe recipe = mRecipeAdapter.getRecipeAtPosition(position);
+        mListener.onRecipeClicked(recipe);
     }
 
     public void setRecipeList(List<Recipe> recipes) {
@@ -103,6 +105,6 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
      * to allow an interaction in this fragment to be communicated to the activity
      */
     public interface OnRecipeClickedListener {
-        void onRecipeClicked(int position);
+        void onRecipeClicked(Recipe recipe);
     }
 }

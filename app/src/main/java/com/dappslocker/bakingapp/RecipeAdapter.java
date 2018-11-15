@@ -54,7 +54,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterView
         notifyDataSetChanged();
     }
 
-    public static Recipe getRecipeAtPosition(int position) {
+    public  Recipe getRecipeAtPosition(int position) {
         if (RecipeList == null){
             return null;
         }

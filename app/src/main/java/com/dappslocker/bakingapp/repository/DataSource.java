@@ -15,6 +15,8 @@ public interface DataSource {
 
         void onRecipeLoaded(List<Recipe> recipes, DataSourceIdentifers dataSourceIdentifier);
 
+        void onRecipeLoaded(Recipe recipe, DataSourceIdentifers dataSourceIdentifier);
+
         void onDataNotAvailable(DataSourceIdentifers dataSourceIdentifier);
     }
 

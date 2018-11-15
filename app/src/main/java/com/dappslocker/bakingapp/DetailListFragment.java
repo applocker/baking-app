@@ -12,6 +12,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.dappslocker.bakingapp.model.Recipe;
 
@@ -55,7 +56,7 @@ public class DetailListFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.detail_fragment_recipe, container, false);
         ButterKnife.bind(this,rootView);
         // Create the adapter
-        mRecipeDetailAdapter = new RecipeDetailAdapter(new Recipe());
+        mRecipeDetailAdapter = new RecipeDetailAdapter(null);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecylerGridView.setLayoutManager(layoutManager);
         mRecylerGridView.setAdapter(mRecipeDetailAdapter);
@@ -76,6 +77,9 @@ public class DetailListFragment extends Fragment {
     }
 
     public void setRecipe(Recipe recipe) {
+        if(recipe == null){
+            Toast.makeText(getContext(),"There was an error loading the recipe",Toast.LENGTH_SHORT).show();
+        }
         mRecipeDetailAdapter.setRecipe(recipe);
     }
 }

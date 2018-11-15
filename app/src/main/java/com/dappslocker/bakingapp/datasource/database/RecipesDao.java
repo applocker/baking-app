@@ -57,4 +57,6 @@ public interface RecipesDao {
     @Query("DELETE FROM recipes")
     void deleteRecipes();
 
+    @Query("SELECT * FROM recipes WHERE id = :id")
+    Recipe getRecipe(int id);
 }

@@ -1,10 +1,10 @@
 package com.dappslocker.bakingapp.repository;
 
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.util.Log;
-
 
 import com.dappslocker.bakingapp.datasource.database.LocalRecipesDataSource;
 import com.dappslocker.bakingapp.model.Recipe;
@@ -24,6 +24,9 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
     private static final String TAG = "RecipesRepository";
 
     MutableLiveData<List<Recipe>> mCachedRecipes;
+
+
+    MutableLiveData<Recipe> mMmutableRecipe;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -60,9 +63,6 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
 
     @Override
     public MutableLiveData<List<Recipe>> getRecipes() {
-/*        if(mCachedRecipes == null){
-            mCachedRecipes = new MutableLiveData<>();
-        }*/
         // Respond immediately with cache if available and not dirty
         if (!mCacheIsDirty && !(mCachedRecipes == null)) {
             return mCachedRecipes;
@@ -74,6 +74,12 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
             getRecipesFromLocalDataSource();
         }
         return mCachedRecipes;
+    }
+
+    public LiveData<Recipe> getRecipe(Integer recipeId) {
+        mMmutableRecipe = new MutableLiveData<>();
+        ((LocalRecipesDataSource)mRecipesLocalDataSource).getRecipe(recipeId);
+        return  mMmutableRecipe;
     }
 
     private void getRecipesFromLocalDataSource() {
@@ -100,7 +106,21 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
         if(dataSourceIdentifier == DataSourceIdentifers.NETWORK){
             refreshLocalDataSources(recipes);
         }
+    }
 
+    /**
+     * @param recipe the recipe returned from the database
+     * @param dataSourceIdentifier used to identify the type of the datasouce
+     */
+    @Override
+    public void onRecipeLoaded(Recipe recipe, DataSourceIdentifers dataSourceIdentifier) {
+        if(dataSourceIdentifier == DataSourceIdentifers.DATABASE){
+            if (mMmutableRecipe != null) {
+                //mMmutableRecipe = new MutableLiveData<>();
+                mMmutableRecipe.postValue(recipe);
+                Log.d(TAG,"inside onRecipeLoaded() recipe returned from database");
+            }
+        }
     }
 
     /**

@@ -37,6 +37,27 @@ public class LocalRecipesDataSource implements RecipesDataSource {
     public void getRecipes() {
         loadFromLocalDatabase();
     }
+
+    public void getRecipe(Integer recipeId) {
+        loadFromLocalDatabase(recipeId);
+    }
+
+
+    /**
+     * Make a room call to read recipies from the local database and notify the invoker via callback
+     */
+    private void loadFromLocalDatabase(final Integer recipeId) {
+        mAppExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                Recipe recipe = recipesDao.getRecipe(recipeId.intValue());
+                if( recipe != null){
+                    mCallback.onRecipeLoaded(recipe, DataSourceUtils.DataSourceIdentifers.DATABASE);
+                    Log.d(TAG, "retrieving recipe from the database was sucessfull");
+                }
+            }
+        });
+    }
     /**
      * Make a room call to read recipies from the local database and notify the invoker via callback
      */
@@ -56,6 +77,7 @@ public class LocalRecipesDataSource implements RecipesDataSource {
             }
         });
     }
+
     @Override
     public void refreshRecipes() {
         getRecipes();
