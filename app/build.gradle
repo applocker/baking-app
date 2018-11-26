@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion  26
+    compileSdkVersion  rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.dappslocker.bakingapp"
         minSdkVersion 16
@@ -19,7 +19,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-    buildToolsVersion '26.0.3'
+    buildToolsVersion rootProject.ext.buildToolsVersion
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
