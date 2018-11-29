@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dappslocker.bakingapp.model.Recipe;
@@ -14,10 +15,19 @@ import com.dappslocker.bakingapp.model.Step;
 
 public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapter.RecipeDetailAdapterViewHolder> {
     private final static String TAG = "RecipeDetailAdapter";
-    private static Recipe mRecipe;
-    RecipeDetailAdapter(Recipe recipe){
+    private Recipe mRecipe;
+    //private static Recipe mRecipe;
+    private final RecipeDetailAdapterOnClickHandler mClickHandler;
+
+    RecipeDetailAdapter(Recipe recipe, RecipeDetailAdapterOnClickHandler clickHandler){
         mRecipe = recipe;
+        mClickHandler = clickHandler;
     }
+
+    public interface RecipeDetailAdapterOnClickHandler {
+        void onClick(int position);
+    }
+
 
     @Override
     public RecipeDetailAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,11 +60,16 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
         notifyDataSetChanged();
     }
 
+    public Recipe getRecipe() {
+        return mRecipe;
+    }
+
     public class RecipeDetailAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         final TextView textViewIngredients;
         final ConstraintLayout constraintLayout;
         final TextView textViewStepCount;
         final TextView textViewStepDescription;
+        final LinearLayout linearLayoutIngridentsContainer;
 
         public RecipeDetailAdapterViewHolder(View view) {
             super(view);
@@ -62,23 +77,26 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
             constraintLayout = view.findViewById(R.id.item_recipe_steps_container);
             textViewStepCount = view.findViewById(R.id.textViewStep);
             textViewStepDescription = view.findViewById(R.id.textViewStepDescription);
+            linearLayoutIngridentsContainer = view.findViewById(R.id.item_recipe_ingredients_container);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            //todo: implement click
+            int position = getAdapterPosition();
+            mClickHandler.onClick(position);
         }
 
         public void bindView(int position) {
             if(position == 0){
                 //set visibility
                 constraintLayout.setVisibility(View.GONE);
-                textViewIngredients.setVisibility(View.VISIBLE);
+                linearLayoutIngridentsContainer.setVisibility(View.VISIBLE);
                 textViewIngredients.setText(R.string.ingridients_title);
             }
             else{
                 Step step = mRecipe.getListOfSteps().get(position-1);
-                textViewIngredients.setVisibility(View.GONE);
+                linearLayoutIngridentsContainer.setVisibility(View.GONE);
                 constraintLayout.setVisibility(View.VISIBLE);
                 textViewStepCount.setText(Integer.valueOf(step.getId()+1).toString());
                 textViewStepDescription.setText(step.getShortDescription());

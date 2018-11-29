@@ -11,12 +11,13 @@ import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.viewmodels.AddRecipeDetailViewModelFactory;
 import com.dappslocker.bakingapp.viewmodels.RecipeDetailActivityViewModel;
 
-public class RecipeDetailActivity extends AppCompatActivity  {
+public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener  {
     private static final String TAG = "RecipeDetailActivity";
     DetailListFragment detailListFragment;
     private static final String RECIPE_ID = "recipe_id";
@@ -63,4 +64,21 @@ public class RecipeDetailActivity extends AppCompatActivity  {
     public IdlingResource getIdlingResource() {
         return viewModel.getIdlingResource();
     }
+
+    @Override
+    public void OnRecipeDetailClicked(int position, Recipe recipe) {
+        if(position == 0){
+            //we want to see list of ingridents
+            IngredientsFrament ingridentsFrament = new IngredientsFrament();
+            //use setArguments(Bundle) to pass
+            ingridentsFrament.setRecipe(recipe);
+            ingridentsFrament.show(getSupportFragmentManager(),"Ingridents Fragment");
+        }
+        else{
+            //launch the video player
+            Toast.makeText(this,"About to play Exoplayer",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

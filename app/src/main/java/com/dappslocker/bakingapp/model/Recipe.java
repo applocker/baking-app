@@ -7,7 +7,6 @@ import android.arch.persistence.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity(tableName = "recipes")
 public class Recipe {
@@ -20,7 +19,7 @@ public class Recipe {
 
     @ColumnInfo(name = "ingredients")
     @SerializedName("ingredients")
-    private ArrayList<Ingredients> listOfIngredients;
+    private ArrayList<Ingredient> listOfIngredients;
 
     @ColumnInfo(name = "steps")
     @SerializedName("steps")
@@ -48,11 +47,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public ArrayList<Ingredients> getListOfIngredients() {
+    public ArrayList<Ingredient> getListOfIngredients() {
         return listOfIngredients;
     }
 
-    public void setListOfIngredients(ArrayList<Ingredients> listOfIngredients) {
+    public void setListOfIngredients(ArrayList<Ingredient> listOfIngredients) {
         this.listOfIngredients = listOfIngredients;
     }
 

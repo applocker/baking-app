@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     android:orientation="vertical">
 
-    <!-- customize for Ingredients -->
+    <!-- customize for Ingredient -->
     <LinearLayout
         android:id="@+id/item_recipe_ingredients_container"
         android:layout_marginBottom="@dimen/layout_margin_8"

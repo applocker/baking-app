@@ -72,10 +72,11 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
 
         if (context instanceof RecipeActivity) {
             mRecipeActivityInstance = (RecipeActivity)context;
+            if (context instanceof OnRecipeClickedListener) {
+                mListener = (OnRecipeClickedListener) context;
+            }
         }
-        if (context instanceof OnRecipeClickedListener) {
-            mListener = (OnRecipeClickedListener) context;
-        } else {
+         else {
             throw new ClassCastException(context.toString()
                     + " must implement OnRecipeClickedListener");
         }
@@ -100,6 +101,7 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
     public void setRecipeList(List<Recipe> recipes) {
         mRecipeAdapter.setRecipeList(recipes);
     }
+
     /**
      * This interface is implemented by {@link com.dappslocker.bakingapp.RecipeActivity}
      * to allow an interaction in this fragment to be communicated to the activity

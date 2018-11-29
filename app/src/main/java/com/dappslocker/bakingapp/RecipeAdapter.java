@@ -21,6 +21,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterView
     public interface RecipeAdapterOnClickHandler {
         void onClick(int position);
     }
+
     RecipeAdapter(List<Recipe> RecipeList, RecipeAdapterOnClickHandler clickHandler ) {
         RecipeAdapter.RecipeList = RecipeList;
         mClickHandler = clickHandler;
