@@ -2,14 +2,17 @@ package com.dappslocker.bakingapp.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
 @Entity(tableName = "recipes")
-public class Recipe {
+public class Recipe implements Parcelable {
     @PrimaryKey
     @SerializedName("id")
     private int id;
@@ -77,5 +80,44 @@ public class Recipe {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public static final Parcelable.Creator<Recipe> CREATOR
+            = new Parcelable.Creator<Recipe>() {
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
+
+    public Recipe() {
+        //Empty constructor for room
+    }
+
+    @Ignore
+    private Recipe(Parcel in) {
+        this.id = in.readInt();
+        this.name = in.readString();
+        in.readTypedList(this.listOfIngredients,Ingredient.CREATOR);
+        in.readTypedList(this.listOfSteps,Step.CREATOR);
+        this.servings=in.readInt();
+        this.image = in.readString();
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeTypedList(listOfIngredients);
+        dest.writeTypedList(listOfSteps);
+        dest.writeInt(servings);
+        dest.writeString(image);
     }
 }

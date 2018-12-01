@@ -2,6 +2,7 @@ package com.dappslocker.bakingapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -13,9 +14,15 @@ import java.util.ArrayList;
 
 public class IngredientsFrament extends DialogFragment {
     private Recipe mRecipe;
+    private static final String RECIPE = "recipe";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Bundle bundle = new Bundle();
+
+        //ingridentsFrament.setRecipe(recipe);
+        bundle = getArguments();
+        //mRecipe = (Recipe) bundle.getParcelableArray(RECIPE);
         ArrayList<Ingredient> ingredients =mRecipe.getListOfIngredients();
         IngredientsAdapter ingridentsAdapter = new IngredientsAdapter(getActivity(),ingredients);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -27,6 +34,11 @@ public class IngredientsFrament extends DialogFragment {
                     }
                 });
         return builder.create();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     public void setRecipe(Recipe recipe) {

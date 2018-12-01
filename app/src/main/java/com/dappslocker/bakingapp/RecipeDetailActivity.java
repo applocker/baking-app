@@ -22,6 +22,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     DetailListFragment detailListFragment;
     private static final String RECIPE_ID = "recipe_id";
     private static final String RECIPE_NAME = "recipe_title";
+    private static final String RECIPE = "recipe";
     private RecipeDetailActivityViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
             //we want to see list of ingridents
             IngredientsFrament ingridentsFrament = new IngredientsFrament();
             //use setArguments(Bundle) to pass
-            ingridentsFrament.setRecipe(recipe);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(RECIPE,recipe);
+            //ingridentsFrament.setRecipe(recipe);
+            ingridentsFrament.setArguments(bundle);
             ingridentsFrament.show(getSupportFragmentManager(),"Ingridents Fragment");
         }
         else{
