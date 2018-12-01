@@ -19,10 +19,8 @@ public class IngredientsFrament extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle bundle = new Bundle();
-
-        //ingridentsFrament.setRecipe(recipe);
         bundle = getArguments();
-        //mRecipe = (Recipe) bundle.getParcelableArray(RECIPE);
+        mRecipe = bundle.getParcelable(RECIPE);
         ArrayList<Ingredient> ingredients =mRecipe.getListOfIngredients();
         IngredientsAdapter ingridentsAdapter = new IngredientsAdapter(getActivity(),ingredients);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

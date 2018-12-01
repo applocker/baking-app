@@ -69,12 +69,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     @Override
     public void OnRecipeDetailClicked(int position, Recipe recipe) {
         if(position == 0){
-            //we want to see list of ingridents
+            //display the list of ingridents
             IngredientsFrament ingridentsFrament = new IngredientsFrament();
-            //use setArguments(Bundle) to pass
             Bundle bundle = new Bundle();
             bundle.putParcelable(RECIPE,recipe);
-            //ingridentsFrament.setRecipe(recipe);
             ingridentsFrament.setArguments(bundle);
             ingridentsFrament.show(getSupportFragmentManager(),"Ingridents Fragment");
         }
