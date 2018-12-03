@@ -76,7 +76,7 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
             textViewIngredients = view.findViewById(R.id.item_recipe_ingredients);
             constraintLayout = view.findViewById(R.id.item_recipe_steps_container);
             textViewStepCount = view.findViewById(R.id.textViewStep);
-            textViewStepDescription = view.findViewById(R.id.textViewStepDescription);
+            textViewStepDescription = view.findViewById(R.id.textViewStepShortDescription);
             linearLayoutIngridentsContainer = view.findViewById(R.id.item_recipe_ingredients_container);
             view.setOnClickListener(this);
         }

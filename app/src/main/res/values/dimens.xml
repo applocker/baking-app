@@ -40,4 +40,10 @@
     <dimen name="progressBar_width">42dp</dimen>
     <dimen name="progressBar_heigth">42dp</dimen>
 
+    <!--custom margins media player  -->
+    <dimen name="layout_margin_96">96dp</dimen>
+    <dimen name="layout_margin_32">32dp</dimen>
+    <dimen name="layout_margin_48">48dp</dimen>
+
+
 </resources>

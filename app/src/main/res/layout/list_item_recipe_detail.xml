@@ -51,7 +51,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewStepDescription"
+            android:id="@+id/textViewStepShortDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -71,7 +71,7 @@
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/play_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textViewStepDescription"
+            app:layout_constraintEnd_toEndOf="@+id/textViewStepShortDescription"
             app:layout_constraintStart_toEndOf="@+id/barrier"
             app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
 
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="start"
-            app:constraint_referenced_ids="textViewStepDescription,imageButtonPlayVideo" />
+            app:constraint_referenced_ids="textViewStepShortDescription,imageButtonPlayVideo" />
 
     </android.support.constraint.ConstraintLayout>
 

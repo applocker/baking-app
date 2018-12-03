@@ -25,9 +25,8 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
 
     private  RecipeDetailAdapter mRecipeDetailAdapter;
     private static final String TAG = "DetailListFragment";
-    private RecipeDetailActivity mRecipeDetailActivity;
     private OnRecipeDetailClickedListener mRecipeDetailClickedListener;
-    private Recipe recipe;
+
 
     public DetailListFragment() {
         // Required empty public constructor
@@ -39,8 +38,7 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
         super.onAttach(context);
 
         if (context instanceof RecipeDetailActivity) {
-            mRecipeDetailActivity = (RecipeDetailActivity)context;
-            if (context instanceof OnRecipeDetailClickedListener) {
+             if (context instanceof OnRecipeDetailClickedListener) {
                 mRecipeDetailClickedListener = (OnRecipeDetailClickedListener)context;
             }
         }

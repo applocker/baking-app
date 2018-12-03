@@ -15,12 +15,19 @@
 
     <string name="ingridients_title">Ingridients</string>
     <string name="play_button">play video</string>
+    <string name="previous_button">Previous Step</string>
+    <string name="next_button">Next Step</string>
+
     <string name="nine_nine">99</string>
 
     <string name="dialog_title">Ingredients</string>
     <string name="dialog_ok">OK</string>
     <string name="quantity">10</string>
     <string name="measure">TABSPN</string>
+    <string name="step_1">Step 1</string>
+    <string name="step">Step </string>
+
+
 
 
 </resources>
