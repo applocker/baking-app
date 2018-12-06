@@ -71,6 +71,7 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
         ));
         //now add the divider to the recyclerview
         mRecylerView.addItemDecoration(dividerItemDecoration);
+        setRetainInstance(true);
 
 
 

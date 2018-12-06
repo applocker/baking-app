@@ -10,7 +10,6 @@ import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
@@ -22,46 +21,48 @@ import com.dappslocker.bakingapp.viewmodels.RecipeDetailActivityViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener  {
+public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener{
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.frameLayoutDetailListFragment_container)
     FrameLayout mFrameDetailListFragment;
 
     private static final String TAG = "RecipeDetailActivity";
     DetailListFragment detailListFragment;
-    StepDetailFragment stepDetailFragment;
     private static final String RECIPE_ID = "recipe_id";
     private static final String RECIPE_NAME = "recipe_title";
     private static final String KEY_RECIPE = "recipe";
     private static final String KEY_POSITION = "position";
+    private static final String KEY_STEP_DETAIL = "is_step_detail";
     private RecipeDetailActivityViewModel viewModel;
     private Integer recipeId;
-    private boolean isvideoFragmentDispalyed = false;
-
+    private boolean isStepDetail = false;
+    private StepDetailFragment stepDetailFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        if(savedInstanceState == null) {
+            ActionBar actionBar = getSupportActionBar();
+            if(actionBar != null){
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
 
-        FragmentManager fm = getSupportFragmentManager();
-        detailListFragment = (DetailListFragment)fm.findFragmentById(R.id.frameLayoutDetailListFragment_container);
+            FragmentManager fm = getSupportFragmentManager();
+            detailListFragment = (DetailListFragment)fm.findFragmentById(R.id.frameLayoutDetailListFragment_container);
 
-        if (detailListFragment == null) {
-            detailListFragment = new DetailListFragment();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.add(R.id.frameLayoutDetailListFragment_container, detailListFragment);
-            ft.commit();
-        }
-        Intent intent = getIntent();
-        if(intent.hasExtra(RECIPE_ID)&&intent.hasExtra(RECIPE_NAME)){
-            recipeId = intent.getIntExtra(RECIPE_ID,0);
-            actionBar.setTitle(intent.getStringExtra(RECIPE_NAME));
-            setupViewModel(recipeId);
+            if (detailListFragment == null) {
+                detailListFragment = new DetailListFragment();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.add(R.id.frameLayoutDetailListFragment_container, detailListFragment);
+                ft.commit();
+            }
+            Intent intent = getIntent();
+            if(intent.hasExtra(RECIPE_ID)&&intent.hasExtra(RECIPE_NAME)){
+                recipeId = intent.getIntExtra(RECIPE_ID,0);
+                actionBar.setTitle(intent.getStringExtra(RECIPE_NAME));
+                setupViewModel(recipeId);
+            }
         }
     }
 
@@ -80,15 +81,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if(isvideoFragmentDispalyed && recipeId != null){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+            getSupportFragmentManager().popBackStackImmediate();
             setupViewModel(recipeId);
-            isvideoFragmentDispalyed = false;
         }
-        else{
-            NavUtils.navigateUpFromSameTask(this);
+        else {
+            finish();
         }
-
     }
 
     @VisibleForTesting
@@ -109,17 +108,38 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
             ingredientsFrament.show(getSupportFragmentManager(),"Ingredients Fragment");
         }
         else{
-            //Show the video player
+            String Tag = StepDetailFragment.class.getSimpleName();
+            stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().findFragmentByTag(Tag);
             if(stepDetailFragment == null){
                 stepDetailFragment = new StepDetailFragment();
             }
             stepDetailFragment.setArguments(bundle);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace( R.id.frameLayoutDetailListFragment_container, stepDetailFragment);
-            transaction.addToBackStack(null);
+            transaction.addToBackStack(Tag);
             transaction.commit();
-            isvideoFragmentDispalyed = true;
+            isStepDetail = true;
         }
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        isStepDetail = savedInstanceState.getBoolean(KEY_STEP_DETAIL);
+        recipeId = savedInstanceState.getInt(RECIPE_ID);
+        detailListFragment = (DetailListFragment) getSupportFragmentManager().getFragment(savedInstanceState,"Detailfragment");
+        stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState,"Stepfragment");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_STEP_DETAIL, isStepDetail);
+        outState.putInt(RECIPE_ID, recipeId);
+        getSupportFragmentManager().putFragment(outState,"Detailfragment",detailListFragment);
+        getSupportFragmentManager().putFragment(outState,"Stepfragment",stepDetailFragment);
+
     }
 
 }

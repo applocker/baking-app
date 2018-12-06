@@ -10,54 +10,6 @@
         android:id="@+id/frameLayoutDetailListFragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<!--        <fragment
-            android:id="@+id/detailListFragment"
-            android:name="com.dappslocker.bakingapp.DetailListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/layout_margin_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:context=".RecipeActivity"
-            tools:layout="@layout/detail_fragment_recipe" />-->
     </FrameLayout>
-
-<!--
-    <FrameLayout
-        android:id="@+id/frameLayoutStepsDetails_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-        <fragment
-            android:id="@+id/stepDetailFragment"
-            android:name="com.dappslocker.bakingapp.StepDetailFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/layout_margin_8"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:context=".RecipeActivity"
-            tools:layout="@layout/step_detail" />
-    </FrameLayout>
--->
 </LinearLayout>
 
-<!--
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/detail_list_fragment"
-    android:name="com.dappslocker.bakingapp.DetailListFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="8dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:context=".RecipeActivity"
-    tools:layout="@layout/detail_fragment_recipe" />-->

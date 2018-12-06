@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.34" />
+        app:layout_constraintGuide_percent="0.48" />
 
     <TextView
         android:id="@+id/textViewStepHeading"
@@ -62,12 +63,12 @@
         android:layout_marginEnd="@dimen/layout_margin_96"
         android:layout_marginRight="@dimen/layout_margin_96"
         android:layout_marginBottom="@dimen/layout_margin_8"
+        android:contentDescription="@string/previous_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalPrevNext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalDescription"
-        app:srcCompat="@drawable/ic_skip_previous_black_24dp"
-        android:contentDescription="@string/previous_button" />
+        app:srcCompat="@drawable/ic_skip_previous_black_24dp" />
 
     <ImageButton
         android:id="@+id/imageButtonNext"
@@ -108,8 +109,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/imageButtonMediaPlayer"
+        <LinearLayout
+            android:id="@+id/linearLayoutContainerVideoPlayer"
+            android:orientation="vertical"
             android:layout_width="@dimen/margin_none"
             android:layout_height="@dimen/margin_none"
             android:layout_marginStart="@dimen/layout_margin_96"
@@ -118,32 +120,35 @@
             android:layout_marginEnd="@dimen/layout_margin_96"
             android:layout_marginRight="@dimen/layout_margin_96"
             android:layout_marginBottom="@dimen/layout_margin_32"
-            android:contentDescription="@string/play_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
-        <!--
-        <ImageButton
-            android:id="@+id/imageButtonMediaPlayer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="@dimen/layout_margin_96"
-            android:layout_marginLeft="@dimen/layout_margin_96"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="@dimen/layout_margin_96"
-            android:layout_marginRight="@dimen/layout_margin_96"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontalMediaPlayer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_play_arrow_black_24dp"
-            android:contentDescription="@string/play_button" />
--->
+            app:layout_constraintTop_toTopOf="parent">
+            <include layout="@layout/video_player" />
+        </LinearLayout>
+
+
+
 
     </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>
+
+<!--
+<ImageButton
+android:id="@+id/imageButtonMediaPlayer"
+android:layout_width="@dimen/margin_none"
+android:layout_height="@dimen/margin_none"
+android:layout_marginStart="@dimen/layout_margin_96"
+android:layout_marginLeft="@dimen/layout_margin_96"
+android:layout_marginTop="@dimen/layout_margin_32"
+android:layout_marginEnd="@dimen/layout_margin_96"
+android:layout_marginRight="@dimen/layout_margin_96"
+android:layout_marginBottom="@dimen/layout_margin_32"
+android:contentDescription="@string/play_button"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+app:srcCompat="@drawable/ic_play_arrow_black_24dp" />-->

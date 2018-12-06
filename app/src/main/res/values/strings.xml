@@ -26,8 +26,8 @@
     <string name="measure">TABSPN</string>
     <string name="step_1">Step 1</string>
     <string name="step">Step </string>
-
-
+    <string name="no_media">No video</string>
+    <string name="video_unavailable">Video Unavailable</string>
 
 
 </resources>
