@@ -32,10 +32,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     private static final String RECIPE_NAME = "recipe_title";
     private static final String KEY_RECIPE = "recipe";
     private static final String KEY_POSITION = "position";
-    private static final String KEY_STEP_DETAIL = "is_step_detail";
+    private static final String KEY_DETAIL_FRAGMENT = "detail_fragment";
+    private static final String KEY_STEP_DETAIL_FRAGMENT = "step_detail_fragment";
     private RecipeDetailActivityViewModel viewModel;
     private Integer recipeId;
-    private boolean isStepDetail = false;
     private StepDetailFragment stepDetailFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +118,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
             transaction.replace( R.id.frameLayoutDetailListFragment_container, stepDetailFragment);
             transaction.addToBackStack(Tag);
             transaction.commit();
-            isStepDetail = true;
         }
     }
 
@@ -126,19 +125,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        isStepDetail = savedInstanceState.getBoolean(KEY_STEP_DETAIL);
         recipeId = savedInstanceState.getInt(RECIPE_ID);
-        detailListFragment = (DetailListFragment) getSupportFragmentManager().getFragment(savedInstanceState,"Detailfragment");
-        stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState,"Stepfragment");
+        detailListFragment = (DetailListFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_DETAIL_FRAGMENT);
+        stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_STEP_DETAIL_FRAGMENT);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_STEP_DETAIL, isStepDetail);
         outState.putInt(RECIPE_ID, recipeId);
-        getSupportFragmentManager().putFragment(outState,"Detailfragment",detailListFragment);
-        getSupportFragmentManager().putFragment(outState,"Stepfragment",stepDetailFragment);
+        getSupportFragmentManager().putFragment(outState,KEY_DETAIL_FRAGMENT,detailListFragment);
+        getSupportFragmentManager().putFragment(outState,KEY_STEP_DETAIL_FRAGMENT,stepDetailFragment);
 
     }
 
