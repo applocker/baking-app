@@ -108,7 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+        
         <LinearLayout
             android:id="@+id/linearLayoutContainerVideoPlayer"
             android:orientation="vertical"
@@ -126,29 +126,7 @@
             app:layout_constraintTop_toTopOf="parent">
             <include layout="@layout/video_player" />
         </LinearLayout>
-
-
-
-
     </android.support.constraint.ConstraintLayout>
-
-
 </android.support.constraint.ConstraintLayout>
 
-<!--
-<ImageButton
-android:id="@+id/imageButtonMediaPlayer"
-android:layout_width="@dimen/margin_none"
-android:layout_height="@dimen/margin_none"
-android:layout_marginStart="@dimen/layout_margin_96"
-android:layout_marginLeft="@dimen/layout_margin_96"
-android:layout_marginTop="@dimen/layout_margin_32"
-android:layout_marginEnd="@dimen/layout_margin_96"
-android:layout_marginRight="@dimen/layout_margin_96"
-android:layout_marginBottom="@dimen/layout_margin_32"
-android:contentDescription="@string/play_button"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:srcCompat="@drawable/ic_play_arrow_black_24dp" />-->
+
