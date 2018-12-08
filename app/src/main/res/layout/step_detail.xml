@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.48" />
+        app:layout_constraintGuide_percent="0.6" />
 
     <TextView
         android:id="@+id/textViewStepHeading"
@@ -108,7 +108,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        
+
+        <FrameLayout
+            android:id="@+id/exoPlayerVideoViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="#000000">
+
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/exoPlayerVideoView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
+
         <LinearLayout
             android:id="@+id/linearLayoutContainerVideoPlayer"
             android:orientation="vertical"
@@ -128,5 +142,6 @@
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
+
 
 
