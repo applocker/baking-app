@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.dappslocker.bakingapp.model.Recipe;
@@ -139,4 +140,22 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+                    getSupportFragmentManager().popBackStackImmediate();
+                    setupViewModel(recipeId);
+                    return true;
+                }
+                else{
+                    return super.onOptionsItemSelected(item);
+                }
+            default:
+                 // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 }
