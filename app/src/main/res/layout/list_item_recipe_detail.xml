@@ -14,13 +14,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/item_recipe_ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="@dimen/textSize_large"
+            android:textSize="@dimen/textSize_very_large"
             tools:text="@tools:sample/lorem" />
     </LinearLayout>
 
@@ -36,12 +37,12 @@
             android:id="@+id/textViewStep"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/nine_nine"
             android:textSize="@dimen/textSize_large"
@@ -54,33 +55,26 @@
             android:id="@+id/textViewStepShortDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="left"
             android:textSize="@dimen/textSize_large"
-            app:layout_constraintBottom_toTopOf="@+id/imageButtonPlayVideo"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/barrier"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/lorem" />
-
-        <ImageButton
-            android:id="@+id/imageButtonPlayVideo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/play_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textViewStepShortDescription"
-            app:layout_constraintStart_toEndOf="@+id/barrier"
-            app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
 
         <android.support.constraint.Barrier
             android:id="@+id/barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="start"
-            app:constraint_referenced_ids="textViewStepShortDescription,imageButtonPlayVideo" />
+            app:constraint_referenced_ids="textViewStepShortDescription" />
 
     </android.support.constraint.ConstraintLayout>
 
