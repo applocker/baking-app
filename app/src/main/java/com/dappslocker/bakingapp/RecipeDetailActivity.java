@@ -129,15 +129,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
         recipeId = savedInstanceState.getInt(RECIPE_ID);
         detailListFragment = (DetailListFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_DETAIL_FRAGMENT);
         stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_STEP_DETAIL_FRAGMENT);
+        setupViewModel(recipeId);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putInt(RECIPE_ID, recipeId);
         getSupportFragmentManager().putFragment(outState,KEY_DETAIL_FRAGMENT,detailListFragment);
-        getSupportFragmentManager().putFragment(outState,KEY_STEP_DETAIL_FRAGMENT,stepDetailFragment);
-
+        if(stepDetailFragment != null ){
+            getSupportFragmentManager().putFragment(outState,KEY_STEP_DETAIL_FRAGMENT,stepDetailFragment);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
