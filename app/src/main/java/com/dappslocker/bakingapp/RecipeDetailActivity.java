@@ -22,7 +22,8 @@ import com.dappslocker.bakingapp.viewmodels.RecipeDetailActivityViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener{
+public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener,
+         StepDetailFragment.PlayVideoLandCliCkListener {
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.frameLayoutDetailListFragment_container)
     FrameLayout mFrameDetailListFragment;
@@ -35,6 +36,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     private static final String KEY_POSITION = "position";
     private static final String KEY_DETAIL_FRAGMENT = "detail_fragment";
     private static final String KEY_STEP_DETAIL_FRAGMENT = "step_detail_fragment";
+    private static final String KEY_VIDEO_URL = "video_url";
     private RecipeDetailActivityViewModel viewModel;
     private Integer recipeId;
     private StepDetailFragment stepDetailFragment;
@@ -59,7 +61,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
                 ft.commit();
             }
             Intent intent = getIntent();
-            if(intent.hasExtra(RECIPE_ID)&&intent.hasExtra(RECIPE_NAME)){
+            if(intent.hasExtra(RECIPE_ID) && intent.hasExtra(RECIPE_NAME)){
                 recipeId = intent.getIntExtra(RECIPE_ID,0);
                 actionBar.setTitle(intent.getStringExtra(RECIPE_NAME));
                 setupViewModel(recipeId);
@@ -129,7 +131,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
         recipeId = savedInstanceState.getInt(RECIPE_ID);
         detailListFragment = (DetailListFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_DETAIL_FRAGMENT);
         stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_STEP_DETAIL_FRAGMENT);
-        setupViewModel(recipeId);
+        if(stepDetailFragment == null){
+            setupViewModel(recipeId);
+        }
     }
 
     @Override
@@ -138,6 +142,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
         getSupportFragmentManager().putFragment(outState,KEY_DETAIL_FRAGMENT,detailListFragment);
         if(stepDetailFragment != null ){
             getSupportFragmentManager().putFragment(outState,KEY_STEP_DETAIL_FRAGMENT,stepDetailFragment);
+        }
+        if(stepDetailFragment != null) {
+            getSupportFragmentManager().putFragment(outState, KEY_STEP_DETAIL_FRAGMENT, stepDetailFragment);
         }
         super.onSaveInstanceState(outState);
     }
@@ -159,5 +166,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    public void onPLayVideoLand(String videoUrl) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_VIDEO_URL,videoUrl);
+        ExoPlayerFragment exoPlayerFragment = new ExoPlayerFragment();
+        exoPlayerFragment.setArguments(bundle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace( R.id.frameLayoutDetailListFragment_container, exoPlayerFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
