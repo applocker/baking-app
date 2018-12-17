@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener,
-         StepDetailFragment.PlayVideoLandCliCkListener {
+         StepDetailFragment.PlayVideoLandCliCkListener,StepDetailFragment.ActionBarListener {
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.frameLayoutDetailListFragment_container)
     FrameLayout mFrameDetailListFragment;
@@ -84,12 +84,30 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+        if (getSupportFragmentManager().getBackStackEntryCount() >= 1){
             getSupportFragmentManager().popBackStackImmediate();
             setupViewModel(recipeId);
         }
         else {
             finish();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (getSupportFragmentManager().getBackStackEntryCount() >= 1){
+                    getSupportFragmentManager().popBackStackImmediate();
+                        setupViewModel(recipeId);
+                    return true;
+                }
+                else{
+                    return super.onOptionsItemSelected(item);
+                }
+            default:
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -140,33 +158,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(RECIPE_ID, recipeId);
         getSupportFragmentManager().putFragment(outState,KEY_DETAIL_FRAGMENT,detailListFragment);
-        if(stepDetailFragment != null ){
-            getSupportFragmentManager().putFragment(outState,KEY_STEP_DETAIL_FRAGMENT,stepDetailFragment);
-        }
         if(stepDetailFragment != null) {
             getSupportFragmentManager().putFragment(outState, KEY_STEP_DETAIL_FRAGMENT, stepDetailFragment);
         }
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (getSupportFragmentManager().getBackStackEntryCount() == 1){
-                    getSupportFragmentManager().popBackStackImmediate();
-                    setupViewModel(recipeId);
-                    return true;
-                }
-                else{
-                    return super.onOptionsItemSelected(item);
-                }
-            default:
-                 // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
 
-        }
-    }
 
     @Override
     public void onPLayVideoLand(String videoUrl) {
@@ -178,5 +176,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
         transaction.replace( R.id.frameLayoutDetailListFragment_container, exoPlayerFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void hideActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.hide();
+        }
     }
 }

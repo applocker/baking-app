@@ -96,20 +96,37 @@ public class StepDetailFragment extends Fragment {
     private boolean playWhenReady;
     private int currentWindow = 0;
     private long playbackPosition = 0;
+    private static boolean exoPlayerLaunced = false;
+    private PlayVideoLandCliCkListener playVideoLandCliCkListener;
+    private ActionBarListener actionBarListener;
 
     public StepDetailFragment(){
 
     }
+
+     interface PlayVideoLandCliCkListener{
+            void onPLayVideoLand(String videoUrl);
+     }
+     interface ActionBarListener{
+            void hideActionBar();
+     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
         if (context instanceof RecipeDetailActivity) {
            this.context = context;
+            if (context instanceof PlayVideoLandCliCkListener) {
+                playVideoLandCliCkListener = (PlayVideoLandCliCkListener) context;
+            }
+            if (context instanceof ActionBarListener) {
+                actionBarListener = (ActionBarListener) context;
+            }
         }
         else {
             throw new ClassCastException(context.toString()
-                    + " must implement OnRecipeClickedListener");
+                    + " must implement PlayVideoLandCliCkListener");
         }
     }
 
@@ -124,20 +141,33 @@ public class StepDetailFragment extends Fragment {
             position =  savedInstanceState.getInt(KEY_POSITION);
             zeroIndexPosition = savedInstanceState.getInt(KEY_ZERO_INDEX);
             isVideoInplay = savedInstanceState.getBoolean(KEY_VIDEO_INPLAY);
-        }else{
-            Bundle bundle = getArguments();
-            mRecipe = bundle.getParcelable(KEY_RECIPE);
-            mTotalSteps = mRecipe.getListOfSteps().size();
-            position =  bundle.getInt(KEY_POSITION);
-            if(position > 0){
-                zeroIndexPosition = position - 1;
+        }
+        else{
+            if (exoPlayerLaunced != true){
+                Bundle bundle = getArguments();
+                mRecipe = bundle.getParcelable(KEY_RECIPE);
+                mTotalSteps = mRecipe.getListOfSteps().size();
+                position =  bundle.getInt(KEY_POSITION);
+                if(position > 0){
+                    zeroIndexPosition = position - 1;
+                }
             }
         }
         updateViews();
         mImageButtonMediaPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayVideo();
+                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    //start exoplayer in full screen mode
+                    exoPlayerLaunced = true;
+                    onSaveInstanceState(new Bundle());
+                    actionBarListener.hideActionBar();
+                    playVideoLandCliCkListener.onPLayVideoLand(videoUrl);
+                }else{
+                    PlayVideo();
+                    exoPlayerLaunced = false;
+                }
+
             }
         });
 
@@ -192,6 +222,7 @@ public class StepDetailFragment extends Fragment {
         int deviceOrientation = getResources().getConfiguration().orientation;
         if (deviceOrientation == Configuration.ORIENTATION_LANDSCAPE && isVideoInplay == true) {
             showVideoInFullScreen();
+            actionBarListener.hideActionBar();
             //get the video url
             mStep = mRecipe.getListOfSteps().get(zeroIndexPosition);
             videoUrl = mStep.getVideoURL();
@@ -217,7 +248,8 @@ public class StepDetailFragment extends Fragment {
             //restore play video container
             if(isVideoInplay){
                 PlayVideo();
-            }else{
+            }
+            else{
                 videoUrl = mStep.getVideoURL();
                 if(videoUrl.isEmpty()){
                     mImageButtonMediaPlayer.setVisibility(View.GONE);
@@ -229,6 +261,9 @@ public class StepDetailFragment extends Fragment {
                 }
             }
 
+        }
+        if(exoPlayerLaunced == true){
+            exoPlayerLaunced = false;
         }
     }
 
@@ -264,7 +299,7 @@ public class StepDetailFragment extends Fragment {
         Uri uri = Uri.parse(videoUrl);
         MediaSource mediaSource = buildMediaSource(uri);
         //we now have a source of media
-        player.prepare(mediaSource, true, false);
+        player.prepare(mediaSource, false, false);
     }
 
     private MediaSource buildMediaSource(Uri uri) {
