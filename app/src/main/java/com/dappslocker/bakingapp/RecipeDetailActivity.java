@@ -23,10 +23,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener,
-         StepDetailFragment.PlayVideoLandCliCkListener,StepDetailFragment.ActionBarListener {
+         StepDetailFragment.PlayVideoLandCliCkListener,StepDetailFragment.ActionBarListener, StepDetailFragment.PrevNextClickListener {
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.frameLayoutDetailListFragment_container)
-    FrameLayout mFrameDetailListFragment;
+    FrameLayout mFrameLayoutDetailListFragment;
+
+    @Nullable
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.frameLayoutStepsDeatilFragment_container)
+    FrameLayout mFrameLayoutStepDetailListFragment;
+
 
     private static final String TAG = "RecipeDetailActivity";
     DetailListFragment detailListFragment;
@@ -40,11 +46,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     private RecipeDetailActivityViewModel viewModel;
     private Integer recipeId;
     private StepDetailFragment stepDetailFragment;
+    private boolean isTwoPaneLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
+        isTwoPaneLayout = getResources().getBoolean(R.bool.isTablet);
         if(savedInstanceState == null) {
             ActionBar actionBar = getSupportActionBar();
             if(actionBar != null){
@@ -84,7 +92,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() >= 1){
+
+        if (!isTwoPaneLayout && getSupportFragmentManager().getBackStackEntryCount() >= 1){
             getSupportFragmentManager().popBackStackImmediate();
             setupViewModel(recipeId);
         }
@@ -97,7 +106,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (getSupportFragmentManager().getBackStackEntryCount() >= 1){
+                if (!isTwoPaneLayout && getSupportFragmentManager().getBackStackEntryCount() >= 1){
                     getSupportFragmentManager().popBackStackImmediate();
                         setupViewModel(recipeId);
                     return true;
@@ -136,7 +145,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
             }
             stepDetailFragment.setArguments(bundle);
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace( R.id.frameLayoutDetailListFragment_container, stepDetailFragment);
+            if(isTwoPaneLayout){
+                transaction.replace( R.id.frameLayoutStepsDeatilFragment_container, stepDetailFragment);
+            }else{
+                transaction.replace( R.id.frameLayoutDetailListFragment_container, stepDetailFragment);
+            }
             transaction.addToBackStack(Tag);
             transaction.commit();
         }
@@ -165,7 +178,6 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     }
 
 
-
     @Override
     public void onPLayVideoLand(String videoUrl) {
         Bundle bundle = new Bundle();
@@ -184,5 +196,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
         if(actionBar != null){
             actionBar.hide();
         }
+    }
+
+    @Override
+    public void prevNextClicked(int position) {
+        if(detailListFragment != null){
+            detailListFragment.prevNextClicked(position);
+        }
+
     }
 }

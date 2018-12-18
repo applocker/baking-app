@@ -32,7 +32,6 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
         // Required empty public constructor
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -73,8 +72,6 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
         mRecylerView.addItemDecoration(dividerItemDecoration);
         setRetainInstance(true);
 
-
-
         return rootView;
     }
 
@@ -98,5 +95,9 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
      */
     public interface OnRecipeDetailClickedListener {
         void OnRecipeDetailClicked(int position, Recipe recipe);
+    }
+
+    public void prevNextClicked(int position){
+        mRecipeDetailAdapter.prevNextClicked(++position);
     }
 }

@@ -16,7 +16,7 @@ import com.dappslocker.bakingapp.model.Step;
 public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapter.RecipeDetailAdapterViewHolder> {
     private final static String TAG = "RecipeDetailAdapter";
     private Recipe mRecipe;
-    //private static Recipe mRecipe;
+    private int selectedPos = RecyclerView.NO_POSITION;
     private final RecipeDetailAdapterOnClickHandler mClickHandler;
 
     RecipeDetailAdapter(Recipe recipe, RecipeDetailAdapterOnClickHandler clickHandler){
@@ -27,7 +27,6 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
     public interface RecipeDetailAdapterOnClickHandler {
         void onClick(int position);
     }
-
 
     @Override
     public RecipeDetailAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -43,6 +42,7 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
             return;
         }
         holder.bindView(position);
+
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
             Log.d(TAG,"inside getItemCount(): mRecipe = null");
             return 0;
         }
-        //list of ingredents will occupy the first position for the reccyclerview
+        //list of ingredents will occupy the first position for the recyclerview
         return mRecipe.getListOfSteps().size()+1;
     }
 
@@ -62,6 +62,14 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
 
     public Recipe getRecipe() {
         return mRecipe;
+    }
+
+    public void prevNextClicked( int position){
+        if(position > 0){
+            notifyItemChanged(selectedPos);
+            selectedPos = position;
+            notifyItemChanged(selectedPos);
+        }
     }
 
     public class RecipeDetailAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
@@ -83,8 +91,14 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
 
         @Override
         public void onClick(View v) {
-            int position = getAdapterPosition();
+             int position = getAdapterPosition();
+            if(position > 0){
+                notifyItemChanged(selectedPos);
+                selectedPos = getAdapterPosition();
+                notifyItemChanged(selectedPos);
+            }
             mClickHandler.onClick(position);
+
         }
 
         public void bindView(int position) {
@@ -100,6 +114,7 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
                 constraintLayout.setVisibility(View.VISIBLE);
                 textViewStepCount.setText(Integer.valueOf(step.getId()+1).toString());
                 textViewStepDescription.setText(step.getShortDescription());
+                this.itemView.setSelected(selectedPos == position);
             }
         }
     }

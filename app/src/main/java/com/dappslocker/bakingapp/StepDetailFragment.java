@@ -99,7 +99,8 @@ public class StepDetailFragment extends Fragment {
     private static boolean exoPlayerLaunced = false;
     private PlayVideoLandCliCkListener playVideoLandCliCkListener;
     private ActionBarListener actionBarListener;
-
+    private PrevNextClickListener twoPanePrevNextClickListener;
+    private boolean isTwoPaneLayout = false;
     public StepDetailFragment(){
 
     }
@@ -109,6 +110,9 @@ public class StepDetailFragment extends Fragment {
      }
      interface ActionBarListener{
             void hideActionBar();
+     }
+     interface PrevNextClickListener{
+            void prevNextClicked(int position);
      }
 
     @Override
@@ -123,6 +127,9 @@ public class StepDetailFragment extends Fragment {
             if (context instanceof ActionBarListener) {
                 actionBarListener = (ActionBarListener) context;
             }
+            if (context instanceof PrevNextClickListener) {
+                twoPanePrevNextClickListener = (PrevNextClickListener) context;
+            }
         }
         else {
             throw new ClassCastException(context.toString()
@@ -135,6 +142,7 @@ public class StepDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.step_detail, container, false);
         ButterKnife.bind(this,rootView);
+        isTwoPaneLayout = getResources().getBoolean(R.bool.isTablet);
         if(savedInstanceState != null){
             mRecipe = savedInstanceState.getParcelable(KEY_RECIPE);
             mTotalSteps = mRecipe.getListOfSteps().size();
@@ -157,10 +165,9 @@ public class StepDetailFragment extends Fragment {
         mImageButtonMediaPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    //start exoplayer in full screen mode
+                if(!isTwoPaneLayout && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    //start exoplayer in full screen mode on phone screens
                     exoPlayerLaunced = true;
-                    onSaveInstanceState(new Bundle());
                     actionBarListener.hideActionBar();
                     playVideoLandCliCkListener.onPLayVideoLand(videoUrl);
                 }else{
@@ -177,9 +184,13 @@ public class StepDetailFragment extends Fragment {
                 zeroIndexPosition = --zeroIndexPosition <= 0 ? 0:zeroIndexPosition;
                 ShowVideoPlayButton();
                 updateViews();
+                if(isTwoPaneLayout){
+                    twoPanePrevNextClickListener.prevNextClicked(zeroIndexPosition);
+                }
                 if(isVideoInplay){
                     releasePlayer();
                 }
+
             }
         });
 
@@ -189,6 +200,9 @@ public class StepDetailFragment extends Fragment {
                 zeroIndexPosition = (++zeroIndexPosition >= mTotalSteps - 1)? mTotalSteps - 1:zeroIndexPosition;
                 ShowVideoPlayButton();
                 updateViews();
+                if(isTwoPaneLayout){
+                    twoPanePrevNextClickListener.prevNextClicked(zeroIndexPosition);
+                }
                 if(isVideoInplay){
                     releasePlayer();
                 }
@@ -203,7 +217,7 @@ public class StepDetailFragment extends Fragment {
         mPlayVideoOrShowNoMediaContainer.setVisibility(View.GONE);
         //show the exoplayer container
         mExoPlayerVideoViewContainer.setVisibility(View.VISIBLE);
-        //begin playig the video
+        //begin playing the video
         isVideoInplay = true;
         initializePlayer();
 
@@ -214,7 +228,7 @@ public class StepDetailFragment extends Fragment {
         mPlayVideoOrShowNoMediaContainer.setVisibility(View.VISIBLE);
         //show the exoplayer container
         mExoPlayerVideoViewContainer.setVisibility(View.GONE);
-        //begin playig the video
+        //begin playing the video
         isVideoInplay = false;
     }
 

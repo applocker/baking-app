@@ -34,10 +34,10 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
     private static final String TAG = "MasterListFragment";
     private  RecipeAdapter mRecipeAdapter;
     private RecipeActivity mRecipeActivityInstance;
+    private int spanCount = 1;
     public MasterListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +53,8 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
 
         // Create the adapter
         mRecipeAdapter = new RecipeAdapter(new ArrayList<Recipe>(), this);
-        //Todo: change grid span based on device and configuration
-        GridLayoutManager  layoutManager = new GridLayoutManager(mRecipeActivityInstance,1,
+        setupSpanCount();
+        GridLayoutManager  layoutManager = new GridLayoutManager(mRecipeActivityInstance,spanCount,
                 GridLayoutManager.VERTICAL,false) ;
         //layoutManager = new GridLayoutManager(this,1,GridLayoutManager.VERTICAL,false) ;
         mRecylerGridView.setLayoutManager(layoutManager);
@@ -65,6 +65,15 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
         return rootView;
     }
 
+    private void setupSpanCount() {
+        boolean isDeviceTablet = getResources().getBoolean(R.bool.isTablet);
+        if (isDeviceTablet) {
+            spanCount = 3;
+        } else {
+            spanCount = 1;
+        }
+
+    }
 
     @Override
     public void onAttach(Context context) {
