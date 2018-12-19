@@ -72,7 +72,8 @@ public class RecipeActivityTest {
         // First, scroll to the position.
         final String RECIPE_ID = "recipe_id";
         final int FIRST_ITEM = 0;
-        Matcher intent = allOf(hasExtra(RECIPE_ID,FIRST_ITEM));
+        final int RECIPE_ID_AT_POS_0 = 1;
+        Matcher intent = allOf(hasExtra(RECIPE_ID,RECIPE_ID_AT_POS_0));
         onView(ViewMatchers.withId(R.id.recycler_view_recipe))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(FIRST_ITEM,click()));
 

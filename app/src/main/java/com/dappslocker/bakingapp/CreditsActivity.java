@@ -1,7 +1,6 @@
 package com.dappslocker.bakingapp;
 
 import android.os.Bundle;
-import android.support.v4.text.TextUtilsCompat;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -30,6 +29,6 @@ public class CreditsActivity extends BaseActivity {
                 System.getProperty("line.separator") + System.getProperty("line.separator") +
                 getResources().getString(R.string.stack_overflow) +  System.getProperty("line.separator") +  getResources().getString(R.string.stack_overflow_source);
 
-        textViewCreditSources.setText(references);       
+        textViewCreditSources.setText(references);
     }
 }

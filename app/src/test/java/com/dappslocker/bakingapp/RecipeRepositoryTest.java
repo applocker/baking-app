@@ -109,7 +109,6 @@ public class RecipeRepositoryTest {
     @Test
     public void whenGetRecipesIsCalledAndCacheIsNotDirtyThenA_LocalDataSourceGetRecipiesIsInvoked(){
         RecipesDataSource localDataSourceSpy = Mockito.spy(localDataSource);
-        Mockito.doNothing().when(localDataSourceSpy).getRecipes();
         recipesRepository = RecipesRepository.getInstance(contextMock,recipesRemoteDataSource,localDataSource);
         recipesRepository.setRecipesRemoteDataSource(recipesRemoteDataSource);
         recipesRepository.setRecipesLocalDataSource(localDataSource);
