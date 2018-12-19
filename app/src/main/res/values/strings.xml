@@ -29,5 +29,18 @@
     <string name="no_media">No video</string>
     <string name="video_unavailable">Video Unavailable</string>
 
+    <string name="about">Baking app version 1.0 </string>
+    <string name="app_logo">baking hat</string>
+    <string name="credits">Credits</string>
+    <string name="credits_intro">References were made to the following sources</string>
+    <string name="exo_player">Exo Player</string>
+    <string name="exo_player_source">Google codelabs for exoplayer "https://codelabs.developers.google.com/codelabs/exoplayer-intro"</string>
+    <string name="udacity">Udacity</string>
+    <string name="udacity_source">Udacity Android Nanodegree lesson code samples</string>
+    <string name="flat_icon">Icon made by Freepik</string>
+    <string name="flat_icon_source">www.flaticon.com</string>
+    <string name="stack_overflow">Stackoverflow</string>
+    <string name="stack_overflow_source">https://stackoverflow.com/</string>
+
 
 </resources>

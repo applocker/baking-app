@@ -23,6 +23,12 @@
             android:parentActivityName=".RecipeActivity"
             android:theme="@style/AppThemeWithNoNavigationView">
         </activity>
+        <activity android:name=".AboutActivity"
+            android:parentActivityName=".RecipeActivity">
+        </activity>
+        <activity android:name=".CreditsActivity"
+            android:parentActivityName=".RecipeActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -24,7 +24,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView =(NavigationView)findViewById(R.id.nav_view);
         toolbar =(Toolbar)findViewById(R.id.toolbar);
         mMasterFragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
@@ -41,19 +41,15 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        //Todo: customise template c
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_recipes) {
+            Intent intent = new Intent(getApplicationContext(), RecipeActivity.class);
+            this.startActivity(intent);
+        } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+            this.startActivity(intent);
+        }else if (id == R.id.nav_credits) {
+            Intent intent = new Intent(getApplicationContext(), CreditsActivity.class);
+            this.startActivity(intent);
         }
 
         mDrawer.closeDrawer(GravityCompat.START);
