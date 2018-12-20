@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.dappslocker.bakingapp.utility.BakingAppUtils;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -37,7 +38,6 @@ public class ExoPlayerFragment extends Fragment {
     private int currentWindow = 0;
     private long playbackPosition = 0;
     private String videoUrl;
-    private static final String KEY_VIDEO_URL = "video_url";
     private Context context;
 
     @Override
@@ -46,7 +46,7 @@ public class ExoPlayerFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.exoplayer_full, container, false);
         ButterKnife.bind(this,rootView);
         Bundle bundle = getArguments();
-        videoUrl = bundle.getString(KEY_VIDEO_URL);
+        videoUrl = bundle.getString(BakingAppUtils.KEY_VIDEO_URL);
         mExoPlayerViewContainer.setVisibility(View.VISIBLE);
         return rootView;
     }

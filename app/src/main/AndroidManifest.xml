@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dappslocker.bakingapp">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,16 +21,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecipeDetailActivity"
+        <activity
+            android:name=".RecipeDetailActivity"
             android:parentActivityName=".RecipeActivity"
-            android:theme="@style/AppThemeWithNoNavigationView">
-        </activity>
-        <activity android:name=".AboutActivity"
-            android:parentActivityName=".RecipeActivity">
-        </activity>
-        <activity android:name=".CreditsActivity"
-            android:parentActivityName=".RecipeActivity">
-        </activity>
+            android:theme="@style/AppThemeWithNoNavigationView"></activity>
+        <activity
+            android:name=".AboutActivity"
+            android:parentActivityName=".RecipeActivity"></activity>
+        <activity
+            android:name=".CreditsActivity"
+            android:parentActivityName=".RecipeActivity"></activity>
+
+        <receiver android:name=".BakingAppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_app_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

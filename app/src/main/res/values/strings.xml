@@ -41,6 +41,8 @@
     <string name="flat_icon_source">www.flaticon.com</string>
     <string name="stack_overflow">Stackoverflow</string>
     <string name="stack_overflow_source">https://stackoverflow.com/</string>
+    <string name="appwidget_text">Yellow Cake</string>
+    <string name="add_widget">Add widget</string>
 
 
 </resources>

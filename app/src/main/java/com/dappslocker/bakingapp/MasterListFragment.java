@@ -1,5 +1,7 @@
 package com.dappslocker.bakingapp;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -72,13 +74,11 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
         } else {
             spanCount = 1;
         }
-
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         if (context instanceof RecipeActivity) {
             mRecipeActivityInstance = (RecipeActivity)context;
             if (context instanceof OnRecipeClickedListener) {
@@ -105,6 +105,9 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
         //get the recipe id for the recipe at this position
         Recipe recipe = mRecipeAdapter.getRecipeAtPosition(position);
         mListener.onRecipeClicked(recipe);
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getContext());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getContext(), BakingAppWidgetProvider.class));
+        BakingAppWidgetProvider.setRecipe(recipe,getContext(),appWidgetManager,appWidgetIds);
     }
 
     public void setRecipeList(List<Recipe> recipes) {

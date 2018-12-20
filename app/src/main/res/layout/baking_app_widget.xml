@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linearLayoutWidgetContainer"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="@dimen/layout_margin_8"
+    android:orientation="horizontal"
+    android:padding="@dimen/widget_margin">
+
+    <ImageView
+        android:id="@+id/imageViewWidgetChefHat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/app_logo"
+        android:src="@drawable/ic_chef_hat_64" />
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_weight="2"
+        android:contentDescription="@string/appwidget_text"
+        android:gravity="fill_horizontal"
+        android:paddingLeft="@dimen/layout_margin_8"
+        android:paddingRight="@dimen/layout_margin_8"
+        android:text="@string/appwidget_text"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/textSize_small"
+        android:textStyle="bold"
+        tools:text="Yellow Cake" />
+
+
+</LinearLayout>

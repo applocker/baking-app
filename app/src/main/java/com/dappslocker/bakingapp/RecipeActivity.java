@@ -22,6 +22,7 @@ import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
 import com.dappslocker.bakingapp.datasource.network.RetrofitClient;
 import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 import com.dappslocker.bakingapp.model.Recipe;
+import com.dappslocker.bakingapp.utility.BakingAppUtils;
 import com.dappslocker.bakingapp.viewmodels.AddRecipeViewModelFactory;
 import com.dappslocker.bakingapp.viewmodels.RecipeActivityViewModel;
 
@@ -50,8 +51,8 @@ public class RecipeActivity extends BaseActivity
     TextView mErrorLoadingMessage;
 
     private static final String TAG = "RecipeActivity";
-    private static final String RECIPE_ID = "recipe_id";
-    private static final String RECIPE_NAME = "recipe_title";
+    //private static final String RECIPE_ID = "recipe_id";
+    //private static final String RECIPE_NAME = "recipe_title";
     private MasterListFragment mMasterFragment;
     @Nullable
     private SimpleIdlingResource mIdlingResource;
@@ -65,7 +66,7 @@ public class RecipeActivity extends BaseActivity
         mMasterFragment = (MasterListFragment) getSupportFragmentManager().findFragmentById(R.id.master_list_fragment);
         getIdlingResource();
         setupViewModel();
-        //testRetrofit();
+
     }
 
     private void setupViewModel() {
@@ -137,47 +138,12 @@ public class RecipeActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void testRetrofit() {
-        GetRecipeDataService service = RetrofitClient.getRetrofitInstance().create(GetRecipeDataService.class);
-        Call<ArrayList<Recipe>> call =
-                service.getRecipies();
-        call.enqueue(new Callback<ArrayList<Recipe>>() {
-            @Override
-            public void onResponse(@NonNull Call<ArrayList<Recipe>> call, @NonNull Response<ArrayList<Recipe>> response) {
-                if(response.isSuccessful()){
-                    displayUserReviewListResponseData(response.body());
-                }
-                else{
-                    displayUserReviewListResponseData(null);
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<ArrayList<Recipe>> call, @NonNull Throwable t) {
-                Log.d(TAG,"inside onFailure(): network error" );
-                displayUserReviewListResponseData(null);
-            }
-        });
-
-    }
-
-    private void displayUserReviewListResponseData(ArrayList<Recipe> recipes) {
-        if (recipes != null) {
-            Log.d(TAG,"Recipe count = " + recipes.size());
-            for (Recipe recipe : recipes) {
-                Log.d(TAG,"Recipe Name: " + recipe.getName()+ "\n");
-            }
-        } else {
-            Log.d(TAG,"There was an errror while retrieving the resource");
-        }
-    }
-
-
     @Override
     public void onRecipeClicked(Recipe recipe) {
         Log.d(TAG,"onClick starting detail activity ...");
         Intent intent = new Intent(getApplicationContext(), RecipeDetailActivity.class);
-        intent.putExtra(RECIPE_ID,recipe.getId());
-        intent.putExtra(RECIPE_NAME,recipe.getName());
+        intent.putExtra(BakingAppUtils.RECIPE_ID,recipe.getId());
+        intent.putExtra(BakingAppUtils.RECIPE_NAME,recipe.getName());
         this.startActivity(intent);
     }
 

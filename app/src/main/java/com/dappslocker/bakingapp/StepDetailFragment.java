@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.model.Step;
+import com.dappslocker.bakingapp.utility.BakingAppUtils;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -81,10 +82,6 @@ public class StepDetailFragment extends Fragment {
     Guideline mGuidelineVertical;
 
     private Recipe mRecipe;
-    private static final String KEY_RECIPE = "recipe";
-    private static final String KEY_POSITION = "position";
-    private static final String KEY_ZERO_INDEX = "zero_index";
-    private static final String KEY_VIDEO_INPLAY = "video_inplay";
     private int position;
     private int zeroIndexPosition;
     private Step mStep;
@@ -144,18 +141,18 @@ public class StepDetailFragment extends Fragment {
         ButterKnife.bind(this,rootView);
         isTwoPaneLayout = getResources().getBoolean(R.bool.isTablet);
         if(savedInstanceState != null){
-            mRecipe = savedInstanceState.getParcelable(KEY_RECIPE);
+            mRecipe = savedInstanceState.getParcelable(BakingAppUtils.KEY_RECIPE);
             mTotalSteps = mRecipe.getListOfSteps().size();
-            position =  savedInstanceState.getInt(KEY_POSITION);
-            zeroIndexPosition = savedInstanceState.getInt(KEY_ZERO_INDEX);
-            isVideoInplay = savedInstanceState.getBoolean(KEY_VIDEO_INPLAY);
+            position =  savedInstanceState.getInt(BakingAppUtils.KEY_POSITION);
+            zeroIndexPosition = savedInstanceState.getInt(BakingAppUtils.KEY_ZERO_INDEX);
+            isVideoInplay = savedInstanceState.getBoolean(BakingAppUtils.KEY_VIDEO_INPLAY);
         }
         else{
             if (exoPlayerLaunced != true){
                 Bundle bundle = getArguments();
-                mRecipe = bundle.getParcelable(KEY_RECIPE);
+                mRecipe = bundle.getParcelable(BakingAppUtils.KEY_RECIPE);
                 mTotalSteps = mRecipe.getListOfSteps().size();
-                position =  bundle.getInt(KEY_POSITION);
+                position =  bundle.getInt(BakingAppUtils.KEY_POSITION);
                 if(position > 0){
                     zeroIndexPosition = position - 1;
                 }
@@ -292,10 +289,10 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         setRetainInstance(true);
-        outState.putParcelable(KEY_RECIPE,mRecipe);
-        outState.putBoolean(KEY_VIDEO_INPLAY,isVideoInplay);
-        outState.putInt(KEY_POSITION,position);
-        outState.putInt(KEY_ZERO_INDEX,zeroIndexPosition);
+        outState.putParcelable(BakingAppUtils.KEY_RECIPE,mRecipe);
+        outState.putBoolean(BakingAppUtils.KEY_VIDEO_INPLAY,isVideoInplay);
+        outState.putInt(BakingAppUtils.KEY_POSITION,position);
+        outState.putInt(BakingAppUtils.KEY_ZERO_INDEX,zeroIndexPosition);
     }
 
     private void initializePlayer() {

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.dappslocker.bakingapp.model.Recipe;
+import com.dappslocker.bakingapp.utility.BakingAppUtils;
 import com.dappslocker.bakingapp.viewmodels.AddRecipeDetailViewModelFactory;
 import com.dappslocker.bakingapp.viewmodels.RecipeDetailActivityViewModel;
 
@@ -36,17 +37,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
 
     private static final String TAG = "RecipeDetailActivity";
     DetailListFragment detailListFragment;
-    private static final String RECIPE_ID = "recipe_id";
-    private static final String RECIPE_NAME = "recipe_title";
-    private static final String KEY_RECIPE = "recipe";
-    private static final String KEY_POSITION = "position";
-    private static final String KEY_DETAIL_FRAGMENT = "detail_fragment";
-    private static final String KEY_STEP_DETAIL_FRAGMENT = "step_detail_fragment";
-    private static final String KEY_VIDEO_URL = "video_url";
+
     private RecipeDetailActivityViewModel viewModel;
     private Integer recipeId;
     private StepDetailFragment stepDetailFragment;
     private boolean isTwoPaneLayout;
+    private static Recipe widgetRecipe = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +65,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
                 ft.commit();
             }
             Intent intent = getIntent();
-            if(intent.hasExtra(RECIPE_ID) && intent.hasExtra(RECIPE_NAME)){
-                recipeId = intent.getIntExtra(RECIPE_ID,0);
-                actionBar.setTitle(intent.getStringExtra(RECIPE_NAME));
+            if(intent.hasExtra(BakingAppUtils.RECIPE_ID) && intent.hasExtra(BakingAppUtils.RECIPE_NAME)){
+                recipeId = intent.getIntExtra(BakingAppUtils.RECIPE_ID,0);
+                actionBar.setTitle(intent.getStringExtra(BakingAppUtils.RECIPE_NAME));
                 setupViewModel(recipeId);
             }
         }
@@ -129,8 +125,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     @Override
     public void OnRecipeDetailClicked(int position, Recipe recipe) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(KEY_RECIPE,recipe);
-        bundle.putInt(KEY_POSITION,position);
+        bundle.putParcelable(BakingAppUtils.KEY_RECIPE,recipe);
+        bundle.putInt(BakingAppUtils.KEY_POSITION,position);
         if(position == 0){
             //display the list of ingredients
             IngredientsFrament ingredientsFrament = new IngredientsFrament();
@@ -159,9 +155,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        recipeId = savedInstanceState.getInt(RECIPE_ID);
-        detailListFragment = (DetailListFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_DETAIL_FRAGMENT);
-        stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState,KEY_STEP_DETAIL_FRAGMENT);
+        recipeId = savedInstanceState.getInt(BakingAppUtils.RECIPE_ID);
+        detailListFragment = (DetailListFragment) getSupportFragmentManager().getFragment(savedInstanceState, BakingAppUtils.KEY_DETAIL_FRAGMENT);
+        stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState, BakingAppUtils.KEY_STEP_DETAIL_FRAGMENT);
         if(stepDetailFragment == null){
             setupViewModel(recipeId);
         }
@@ -169,10 +165,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(RECIPE_ID, recipeId);
-        getSupportFragmentManager().putFragment(outState,KEY_DETAIL_FRAGMENT,detailListFragment);
+        outState.putInt(BakingAppUtils.RECIPE_ID, recipeId);
+        getSupportFragmentManager().putFragment(outState, BakingAppUtils.KEY_DETAIL_FRAGMENT,detailListFragment);
         if(stepDetailFragment != null) {
-            getSupportFragmentManager().putFragment(outState, KEY_STEP_DETAIL_FRAGMENT, stepDetailFragment);
+            getSupportFragmentManager().putFragment(outState, BakingAppUtils.KEY_STEP_DETAIL_FRAGMENT, stepDetailFragment);
         }
         super.onSaveInstanceState(outState);
     }
@@ -181,7 +177,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     @Override
     public void onPLayVideoLand(String videoUrl) {
         Bundle bundle = new Bundle();
-        bundle.putString(KEY_VIDEO_URL,videoUrl);
+        bundle.putString(BakingAppUtils.KEY_VIDEO_URL,videoUrl);
         ExoPlayerFragment exoPlayerFragment = new ExoPlayerFragment();
         exoPlayerFragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -199,10 +195,23 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(getIntent().hasExtra(BakingAppUtils.RECIPE_LAUNCED_FROM_WIDGET) &&
+                getIntent().getBooleanExtra(BakingAppUtils.RECIPE_LAUNCED_FROM_WIDGET,false) == true){
+            OnRecipeDetailClicked(0, widgetRecipe);
+        }
+    }
+
+    @Override
     public void prevNextClicked(int position) {
         if(detailListFragment != null){
             detailListFragment.prevNextClicked(position);
         }
 
+    }
+
+    public static void setWidgetRecipe(Recipe widgetRecipe) {
+        RecipeDetailActivity.widgetRecipe = widgetRecipe;
     }
 }
