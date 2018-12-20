@@ -1,16 +1,12 @@
 /*
- * Created by Tiwuya on 22,August,2018
+ Referenced code samples from : http://square.github.io/retrofit/
  */
-/***************************************************************************************
- *    Referenced code samples from : http://square.github.io/retrofit/
- ***************************************************************************************/
 package com.dappslocker.bakingapp.datasource.network;
 
 import com.dappslocker.bakingapp.model.Recipe;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -2,6 +2,7 @@ package com.dappslocker.bakingapp.datasource.network;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
@@ -22,6 +23,7 @@ public class RemoteRecipesDataSource implements RecipesDataSource {
     private static final String TAG = "RemoteRecipesDataSource";
     private LoadRecipeCallback mCallback;
     private GetRecipeDataService service;
+    @SuppressWarnings("FieldCanBeLocal")
     private  Call<ArrayList<Recipe>> call;
     @Nullable
     private final SimpleIdlingResource mIdlingResource;
@@ -38,7 +40,7 @@ public class RemoteRecipesDataSource implements RecipesDataSource {
         return INSTANCE;
     }
 
-    public GetRecipeDataService getService() {
+    private GetRecipeDataService getService() {
         return RetrofitClient.getRetrofitInstance().create(GetRecipeDataService.class);
     }
 
@@ -102,7 +104,9 @@ public class RemoteRecipesDataSource implements RecipesDataSource {
         });
     }
 
-    public static boolean isTestSetup(String testString){
+    @SuppressWarnings("SameReturnValue")
+    @VisibleForTesting
+    public static boolean isTestSetup(@SuppressWarnings("unused") String testString){
         return true;
     }
 

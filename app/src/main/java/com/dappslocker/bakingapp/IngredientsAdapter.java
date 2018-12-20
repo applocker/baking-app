@@ -13,10 +13,11 @@ import com.dappslocker.bakingapp.model.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class IngredientsAdapter extends ArrayAdapter<Ingredient> {
-    private Context mContext;
-    private List<Ingredient> mIngredients;
+class IngredientsAdapter extends ArrayAdapter<Ingredient> {
+    private final Context mContext;
+    private final List<Ingredient> mIngredients;
     public IngredientsAdapter(@NonNull Context context, @NonNull ArrayList<Ingredient> ingredients) {
         super(context, 0, ingredients);
         mContext = context;
@@ -32,13 +33,13 @@ public class IngredientsAdapter extends ArrayAdapter<Ingredient> {
 
         Ingredient ingredient = mIngredients.get(position);
 
-        TextView textViewQuantity = (TextView)listItem.findViewById(R.id.textViewQuantity);
-        textViewQuantity.setText(Float.toString(ingredient.getQuantity()));
+        TextView textViewQuantity = listItem.findViewById(R.id.textViewQuantity);
+        textViewQuantity.setText(String.format(Locale.getDefault(),"%.2f",ingredient.getQuantity()));
 
-        TextView textViewMeasure = (TextView) listItem.findViewById(R.id.textViewMeasure);
+        TextView textViewMeasure = listItem.findViewById(R.id.textViewMeasure);
         textViewMeasure.setText(ingredient.getMeasure());
 
-        TextView textViewIngredient = (TextView) listItem.findViewById(R.id.textViewIngridentsTitle);
+        TextView textViewIngredient = listItem.findViewById(R.id.textViewIngridentsTitle);
         textViewIngredient.setText(ingredient.getIngredient());
 
         return listItem;

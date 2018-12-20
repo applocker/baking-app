@@ -19,7 +19,7 @@ public class SimpleIdlingResource implements IdlingResource {
     private volatile ResourceCallback mCallback;
 
     // Idleness is controlled with this boolean.
-    private AtomicBoolean mIsIdleNow = new AtomicBoolean(true);
+    private final AtomicBoolean mIsIdleNow = new AtomicBoolean(true);
 
     @Override
     public String getName() {
@@ -43,6 +43,7 @@ public class SimpleIdlingResource implements IdlingResource {
     public void setIdleState(boolean isIdleNow) {
         mIsIdleNow.set(isIdleNow);
         if (isIdleNow && mCallback != null) {
+            //noinspection ConstantConditions
             mCallback.onTransitionToIdle();
         }
     }

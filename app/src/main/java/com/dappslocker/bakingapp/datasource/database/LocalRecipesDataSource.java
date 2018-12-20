@@ -18,7 +18,7 @@ public class LocalRecipesDataSource implements RecipesDataSource {
     private LoadRecipeCallback mCallback;
     private volatile static LocalRecipesDataSource INSTANCE = null;
     private static final String TAG = "LocalRecipesDataSource";
-    private RecipesDao recipesDao;
+    private final RecipesDao recipesDao;
     private static AppExecutors mAppExecutors;
 
     private LocalRecipesDataSource(Application application) {
@@ -54,7 +54,7 @@ public class LocalRecipesDataSource implements RecipesDataSource {
                 if(idlingResource != null){
                     idlingResource.setIdleState(false);
                 }
-                Recipe recipe = recipesDao.getRecipe(recipeId.intValue());
+                @SuppressWarnings("UnnecessaryUnboxing") Recipe recipe = recipesDao.getRecipe(recipeId.intValue());
                 if( recipe != null){
                     mCallback.onRecipeLoaded(recipe, DataSourceUtils.DataSourceIdentifers.DATABASE);
                     Log.d(TAG, "retrieving recipe from the database was sucessfull");

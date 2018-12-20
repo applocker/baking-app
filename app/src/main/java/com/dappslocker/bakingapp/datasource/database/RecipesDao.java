@@ -1,6 +1,5 @@
 package com.dappslocker.bakingapp.datasource.database;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -16,6 +15,7 @@ import java.util.List;
  * Data access object for Recipes
  */
 @Dao
+@SuppressWarnings("unused")
 public interface RecipesDao {
     /**
      * Select all recipes from the Recipies table.

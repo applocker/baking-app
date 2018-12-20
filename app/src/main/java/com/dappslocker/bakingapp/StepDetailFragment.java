@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.util.Util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("ConstantConditions")
 public class StepDetailFragment extends Fragment {
 
     @SuppressWarnings("WeakerAccess")
@@ -84,7 +85,6 @@ public class StepDetailFragment extends Fragment {
     private Recipe mRecipe;
     private int position;
     private int zeroIndexPosition;
-    private Step mStep;
     private int mTotalSteps;
     private String videoUrl;
     private boolean isVideoInplay;
@@ -118,15 +118,9 @@ public class StepDetailFragment extends Fragment {
 
         if (context instanceof RecipeDetailActivity) {
            this.context = context;
-            if (context instanceof PlayVideoLandCliCkListener) {
-                playVideoLandCliCkListener = (PlayVideoLandCliCkListener) context;
-            }
-            if (context instanceof ActionBarListener) {
-                actionBarListener = (ActionBarListener) context;
-            }
-            if (context instanceof PrevNextClickListener) {
-                twoPanePrevNextClickListener = (PrevNextClickListener) context;
-            }
+            playVideoLandCliCkListener = (PlayVideoLandCliCkListener) context;
+            actionBarListener = (ActionBarListener) context;
+            twoPanePrevNextClickListener = (PrevNextClickListener) context;
         }
         else {
             throw new ClassCastException(context.toString()
@@ -135,7 +129,7 @@ public class StepDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.step_detail, container, false);
         ButterKnife.bind(this,rootView);
@@ -148,6 +142,7 @@ public class StepDetailFragment extends Fragment {
             isVideoInplay = savedInstanceState.getBoolean(BakingAppUtils.KEY_VIDEO_INPLAY);
         }
         else{
+            //noinspection PointlessBooleanExpression
             if (exoPlayerLaunced != true){
                 Bundle bundle = getArguments();
                 mRecipe = bundle.getParcelable(BakingAppUtils.KEY_RECIPE);
@@ -231,7 +226,8 @@ public class StepDetailFragment extends Fragment {
 
     private void updateViews() {
         int deviceOrientation = getResources().getConfiguration().orientation;
-        if (deviceOrientation == Configuration.ORIENTATION_LANDSCAPE && isVideoInplay == true) {
+        Step mStep;
+        if (deviceOrientation == Configuration.ORIENTATION_LANDSCAPE && isVideoInplay) {
             showVideoInFullScreen();
             actionBarListener.hideActionBar();
             //get the video url
@@ -254,7 +250,8 @@ public class StepDetailFragment extends Fragment {
             }
             //update view steps
             mStep = mRecipe.getListOfSteps().get(zeroIndexPosition);
-            mTextViewStep.setText(getResources().getString(R.string.step) + " " + mStep.getId());
+            CharSequence text = getResources().getString(R.string.step) + " " + mStep.getId();
+            mTextViewStep.setText(text);
             mTextViewStepDescription.setText(mStep.getDescription());
             //restore play video container
             if(isVideoInplay){
@@ -273,6 +270,7 @@ public class StepDetailFragment extends Fragment {
             }
 
         }
+        //noinspection PointlessBooleanExpression
         if(exoPlayerLaunced == true){
             exoPlayerLaunced = false;
         }

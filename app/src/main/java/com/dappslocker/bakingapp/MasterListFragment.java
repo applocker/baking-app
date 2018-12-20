@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +34,6 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
     RecyclerView mRecylerGridView;
 
     private OnRecipeClickedListener mListener;
-    private static final String TAG = "MasterListFragment";
     private  RecipeAdapter mRecipeAdapter;
     private RecipeActivity mRecipeActivityInstance;
     private int spanCount = 1;
@@ -42,12 +42,7 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.main_fragment_recipe, container, false);
@@ -58,7 +53,6 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
         setupSpanCount();
         GridLayoutManager  layoutManager = new GridLayoutManager(mRecipeActivityInstance,spanCount,
                 GridLayoutManager.VERTICAL,false) ;
-        //layoutManager = new GridLayoutManager(this,1,GridLayoutManager.VERTICAL,false) ;
         mRecylerGridView.setLayoutManager(layoutManager);
         // Set the adapter on the GridView
         mRecylerGridView.setAdapter(mRecipeAdapter);
@@ -81,9 +75,7 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
         super.onAttach(context);
         if (context instanceof RecipeActivity) {
             mRecipeActivityInstance = (RecipeActivity)context;
-            if (context instanceof OnRecipeClickedListener) {
-                mListener = (OnRecipeClickedListener) context;
-            }
+            mListener = (OnRecipeClickedListener) context;
         }
          else {
             throw new ClassCastException(context.toString()
@@ -100,6 +92,7 @@ public class MasterListFragment extends Fragment implements  RecipeAdapter.Recip
     /**
      *  @param position the recipe position that was clicked
      */
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onClick(int position) {
         //get the recipe id for the recipe at this position

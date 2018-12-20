@@ -8,7 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
- * Use a singlr non ui thread for database operations
+ * Use a single non ui thread for database operations
  */
 public class AppExecutors {
     // For Singleton instantiation
@@ -36,6 +36,7 @@ public class AppExecutors {
         return diskIO;
     }
 
+    @SuppressWarnings("unused")
     public Executor mainThread() {
         return mainThread;
     }

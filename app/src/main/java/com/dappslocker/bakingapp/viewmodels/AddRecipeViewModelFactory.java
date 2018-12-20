@@ -9,14 +9,15 @@ import android.support.annotation.Nullable;
 import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 
 public class AddRecipeViewModelFactory extends NewInstanceFactory {
-    private Application mApplication;
-    private SimpleIdlingResource mIdlingResource;
+    private final Application mApplication;
+    private final SimpleIdlingResource mIdlingResource;
 
     public AddRecipeViewModelFactory(@NonNull Application application, @Nullable SimpleIdlingResource simpleIdlingResource ){
         mApplication = application;
         mIdlingResource = simpleIdlingResource;
     }
 
+    @SuppressWarnings("unchecked")
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {

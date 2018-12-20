@@ -2,6 +2,7 @@ package com.dappslocker.bakingapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -24,7 +25,6 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
     RecyclerView mRecylerView;
 
     private  RecipeDetailAdapter mRecipeDetailAdapter;
-    private static final String TAG = "DetailListFragment";
     private OnRecipeDetailClickedListener mRecipeDetailClickedListener;
 
 
@@ -37,9 +37,7 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
         super.onAttach(context);
 
         if (context instanceof RecipeDetailActivity) {
-             if (context instanceof OnRecipeDetailClickedListener) {
-                mRecipeDetailClickedListener = (OnRecipeDetailClickedListener)context;
-            }
+            mRecipeDetailClickedListener = (OnRecipeDetailClickedListener)context;
         }
         else {
             throw new ClassCastException(context.toString()
@@ -48,13 +46,13 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.detail_fragment_recipe, container, false);
         ButterKnife.bind(this,rootView);
         // Create the adapter
-        mRecipeDetailAdapter = new RecipeDetailAdapter(null,this);
+        mRecipeDetailAdapter = new RecipeDetailAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecylerView.setLayoutManager(layoutManager);
         mRecylerView.setAdapter(mRecipeDetailAdapter);
@@ -64,6 +62,7 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
                 layoutManager.getOrientation()
         );
         //set a drawable for this item decoration
+        //noinspection ConstantConditions
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(
                 getContext(),
                 R.drawable.recyclerview_divider_white

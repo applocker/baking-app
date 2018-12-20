@@ -1,8 +1,8 @@
 package com.dappslocker.bakingapp;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,29 +38,16 @@ public class ExoPlayerFragment extends Fragment {
     private int currentWindow = 0;
     private long playbackPosition = 0;
     private String videoUrl;
-    private Context context;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.exoplayer_full, container, false);
         ButterKnife.bind(this,rootView);
         Bundle bundle = getArguments();
-        videoUrl = bundle.getString(BakingAppUtils.KEY_VIDEO_URL);
+        videoUrl = bundle != null ? bundle.getString(BakingAppUtils.KEY_VIDEO_URL) : null;
         mExoPlayerViewContainer.setVisibility(View.VISIBLE);
         return rootView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof RecipeDetailActivity) {
-            this.context = context;
-        }
-        else {
-            throw new ClassCastException(context.toString());
-        }
     }
 
     private void initializePlayer() {

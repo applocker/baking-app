@@ -11,6 +11,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 @Entity(tableName = "recipes")
 public class Recipe implements Parcelable {
     @PrimaryKey

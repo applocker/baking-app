@@ -23,8 +23,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class RecipeDetailActivityTest {
     private static final String RECIPE_NAME = "recipe_title";
     private static final String RECIPE_ID = "recipe_id";
-    Intent intent;
-    int recipeId;
+    private Intent intent;
+    private int recipeId;
 
 
     private IdlingResource mIdlingResource;

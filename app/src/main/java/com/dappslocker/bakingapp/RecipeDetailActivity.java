@@ -13,30 +13,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.utility.BakingAppUtils;
 import com.dappslocker.bakingapp.viewmodels.AddRecipeDetailViewModelFactory;
 import com.dappslocker.bakingapp.viewmodels.RecipeDetailActivityViewModel;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class RecipeDetailActivity extends AppCompatActivity implements DetailListFragment.OnRecipeDetailClickedListener,
          StepDetailFragment.PlayVideoLandCliCkListener,StepDetailFragment.ActionBarListener, StepDetailFragment.PrevNextClickListener {
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.frameLayoutDetailListFragment_container)
-    FrameLayout mFrameLayoutDetailListFragment;
 
-    @Nullable
-    @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.frameLayoutStepsDeatilFragment_container)
-    FrameLayout mFrameLayoutStepDetailListFragment;
-
-
-    private static final String TAG = "RecipeDetailActivity";
-    DetailListFragment detailListFragment;
+    private DetailListFragment detailListFragment;
 
     private RecipeDetailActivityViewModel viewModel;
     private Integer recipeId;
@@ -47,7 +33,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        ButterKnife.bind(this);
+
         isTwoPaneLayout = getResources().getBoolean(R.bool.isTablet);
         if(savedInstanceState == null) {
             ActionBar actionBar = getSupportActionBar();
@@ -67,6 +53,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
             Intent intent = getIntent();
             if(intent.hasExtra(BakingAppUtils.RECIPE_ID) && intent.hasExtra(BakingAppUtils.RECIPE_NAME)){
                 recipeId = intent.getIntExtra(BakingAppUtils.RECIPE_ID,0);
+                //noinspection ConstantConditions
                 actionBar.setTitle(intent.getStringExtra(BakingAppUtils.RECIPE_NAME));
                 setupViewModel(recipeId);
             }
@@ -74,8 +61,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     }
 
 
-    private void setupViewModel(Integer reciPeId) {
-        AddRecipeDetailViewModelFactory factory = new AddRecipeDetailViewModelFactory(getApplication(),reciPeId);
+    private void setupViewModel(Integer recipeId) {
+        AddRecipeDetailViewModelFactory factory = new AddRecipeDetailViewModelFactory(getApplication(),recipeId);
         viewModel = ViewModelProviders.of(this,factory).get(RecipeDetailActivityViewModel.class);
         viewModel.getRecipe().observe(this, new Observer<Recipe>() {
             @Override
@@ -167,7 +154,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(BakingAppUtils.RECIPE_ID, recipeId);
         getSupportFragmentManager().putFragment(outState, BakingAppUtils.KEY_DETAIL_FRAGMENT,detailListFragment);
-        if(stepDetailFragment != null) {
+        if(stepDetailFragment != null && stepDetailFragment.isAdded()) {
             getSupportFragmentManager().putFragment(outState, BakingAppUtils.KEY_STEP_DETAIL_FRAGMENT, stepDetailFragment);
         }
         super.onSaveInstanceState(outState);
@@ -198,7 +185,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     protected void onResume() {
         super.onResume();
         if(getIntent().hasExtra(BakingAppUtils.RECIPE_LAUNCED_FROM_WIDGET) &&
-                getIntent().getBooleanExtra(BakingAppUtils.RECIPE_LAUNCED_FROM_WIDGET,false) == true){
+                getIntent().getBooleanExtra(BakingAppUtils.RECIPE_LAUNCED_FROM_WIDGET, false)){
             OnRecipeDetailClicked(0, widgetRecipe);
         }
     }

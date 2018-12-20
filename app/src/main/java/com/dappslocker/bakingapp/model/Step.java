@@ -5,17 +5,22 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
-
+@SuppressWarnings("unused")
 public class Step implements Parcelable {
     @SerializedName("id")
+    private
     Integer id;
     @SerializedName("shortDescription")
+    private
     String shortDescription;
     @SerializedName("description")
+    private
     String description;
     @SerializedName("videoURL")
+    private
     String videoURL;
     @SerializedName("thumbnailURL")
+    private
     String thumbnailURL;
 
 

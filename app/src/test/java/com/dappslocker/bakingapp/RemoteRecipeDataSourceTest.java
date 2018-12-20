@@ -32,6 +32,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 
+@SuppressWarnings("unchecked")
 public class RemoteRecipeDataSourceTest {
     @InjectMocks
     private RemoteRecipesDataSource remoteRecipesDataSource;
@@ -61,6 +62,7 @@ public class RemoteRecipeDataSourceTest {
         }).when(mockedCall).enqueue((Callback<ArrayList<Recipe>>) Mockito.<List<Recipe>>any());
 
         SimpleIdlingResource simpleIdlingResource = null;
+        //noinspection ConstantConditions
         remoteRecipesDataSource = RemoteRecipesDataSource.getInstance(simpleIdlingResource);
         // inject mocks
         remoteRecipesDataSource.setLoadRecipeCallBack(callBack);
@@ -106,6 +108,7 @@ public class RemoteRecipeDataSourceTest {
         }).when(mockedCall).enqueue((Callback<ArrayList<Recipe>>) Mockito.<List<Recipe>>any());
 
         SimpleIdlingResource simpleIdlingResource = null;
+        //noinspection ConstantConditions
         remoteRecipesDataSource = RemoteRecipesDataSource.getInstance(simpleIdlingResource);
         // inject mocks
         remoteRecipesDataSource.setLoadRecipeCallBack(callBack);

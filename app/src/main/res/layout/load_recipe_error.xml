@@ -44,7 +44,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView_error"
             android:layout_width="@dimen/imageView_error_width"
             android:layout_height="@dimen/imageView_error_heigth"
             android:layout_gravity="center"

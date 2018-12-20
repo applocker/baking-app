@@ -4,11 +4,11 @@ import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.utility.DataSourceUtils.DataSourceIdentifers;
 
 import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
 
 import java.util.List;
 
 
+@SuppressWarnings("ALL")
 public interface DataSource {
 
     interface LoadRecipeCallback {

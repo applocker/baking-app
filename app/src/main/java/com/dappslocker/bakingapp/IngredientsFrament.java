@@ -2,9 +2,9 @@ package com.dappslocker.bakingapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import com.dappslocker.bakingapp.model.Ingredient;
@@ -16,12 +16,14 @@ public class IngredientsFrament extends DialogFragment {
     private Recipe mRecipe;
     private static final String KEY_RECIPE = "recipe";
 
+    @SuppressWarnings("ConstantConditions")
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         mRecipe = bundle.getParcelable(KEY_RECIPE);
         ArrayList<Ingredient> ingredients =mRecipe.getListOfIngredients();
-        IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getActivity(),ingredients);
+        @SuppressWarnings("ConstantConditions") IngredientsAdapter ingredientsAdapter = new IngredientsAdapter(getActivity(),ingredients);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.dialog_title)
                 .setAdapter(ingredientsAdapter, null)
@@ -33,11 +35,7 @@ public class IngredientsFrament extends DialogFragment {
         return builder.create();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
+    @SuppressWarnings("unused")
     public void setRecipe(Recipe recipe) {
         mRecipe = recipe;
     }

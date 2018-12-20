@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:background="@drawable/list_item_selector"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusable="true">
 
     <!-- customize for Ingredient -->
     <LinearLayout
@@ -63,7 +64,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:gravity="left"
+            android:gravity="start"
             android:textSize="@dimen/textSize_large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

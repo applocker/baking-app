@@ -31,6 +31,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("SimplifiableJUnitAssertion")
 @RunWith(MockitoJUnitRunner.class)
 public class RecipeRepositoryTest {
 
@@ -120,10 +121,10 @@ public class RecipeRepositoryTest {
 
     private class BooleanWrapper{
         private boolean isInvoked;
-        public boolean isInvoked() {
+        boolean isInvoked() {
             return isInvoked;
         }
-        public void setInvoked(boolean invoked) {
+        void setInvoked(boolean invoked) {
             isInvoked = invoked;
         }
     }

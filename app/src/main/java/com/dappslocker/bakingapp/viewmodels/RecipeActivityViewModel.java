@@ -17,7 +17,6 @@ import java.util.List;
 
 
 public class RecipeActivityViewModel extends ViewModel {
-    private static final String TAG = RecipeActivityViewModel.class.getSimpleName();
     private static RecipesRepository mRecipesRepository;
     private static MutableLiveData<List<Recipe>> mRecipes;
 

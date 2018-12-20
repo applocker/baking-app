@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.dappslocker.bakingapp.datasource.database.LocalRecipesDataSource;
@@ -14,7 +15,7 @@ import com.dappslocker.bakingapp.utility.DataSourceUtils.DataSourceIdentifers;
 
 import java.util.List;
 
-
+@SuppressWarnings("unused")
 public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallback {
 
     private volatile static RecipesRepository INSTANCE = null;
@@ -25,16 +26,16 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
 
     private static final String TAG = "RecipesRepository";
 
-    MutableLiveData<List<Recipe>> mCachedRecipes;
+    private MutableLiveData<List<Recipe>> mCachedRecipes;
 
-    MutableLiveData<Recipe> mMmutableRecipe;
+    private MutableLiveData<Recipe> mMmutableRecipe;
 
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
      * set to true the first time we get the repository instance in the view model and each time a refresh is requested
      */
-     boolean mCacheIsDirty = false;
+    private boolean mCacheIsDirty = false;
 
 
     // Prevent direct instantiation.
@@ -152,7 +153,8 @@ public class RecipesRepository implements DataSource,DataSource.LoadRecipeCallba
         mCacheIsDirty = true;
     }
 
-
+    @VisibleForTesting
+    @SuppressWarnings("SameReturnValue")
     public static boolean isTestSetup(String testString){
         return true;
     }

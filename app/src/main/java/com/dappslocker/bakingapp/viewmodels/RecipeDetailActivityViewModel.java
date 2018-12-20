@@ -14,15 +14,14 @@ import com.dappslocker.bakingapp.repository.RecipesRepository;
 
 
 public class RecipeDetailActivityViewModel extends ViewModel {
-    private static RecipesRepository mRecipesRepository;
-    private LiveData<Recipe> recipe;
+    private final LiveData<Recipe> recipe;
     private SimpleIdlingResource mIdlingResource;
 
 
     public RecipeDetailActivityViewModel(@NonNull Application application, Integer recipeId) {
         RemoteRecipesDataSource remoteRecipesDataSource = RemoteRecipesDataSource.getInstance(null);
         LocalRecipesDataSource localRecipesDataSource = LocalRecipesDataSource.getInstance(application);
-        mRecipesRepository = RecipesRepository.getInstance(application,remoteRecipesDataSource,localRecipesDataSource);
+        RecipesRepository mRecipesRepository = RecipesRepository.getInstance(application, remoteRecipesDataSource, localRecipesDataSource);
         if (mIdlingResource == null) {
             mIdlingResource = new SimpleIdlingResource();
         }

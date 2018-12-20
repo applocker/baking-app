@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class RecipeActivityTest {
     @Rule
-    public IntentsTestRule<RecipeActivity> mActivityTestRule =
+    public final IntentsTestRule<RecipeActivity> mActivityTestRule =
             new IntentsTestRule<>(RecipeActivity.class);
 
     private IdlingResource mIdlingResource;
@@ -78,6 +78,7 @@ public class RecipeActivityTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(FIRST_ITEM,click()));
 
         // Check that the intent was launched.
+        //noinspection unchecked
         intended(intent);
 
     }

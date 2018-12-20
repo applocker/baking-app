@@ -1,9 +1,6 @@
-/**
- * Created by Tiwuya on 22,August,2018
+/*
+ Referenced code samples from : http://square.github.io/retrofit/
  */
-/***************************************************************************************
- *    Referenced code samples from : http://square.github.io/retrofit/
- ***************************************************************************************/
 package com.dappslocker.bakingapp.datasource.network;
 
 import com.dappslocker.bakingapp.utility.NetworkUtils;
@@ -11,7 +8,7 @@ import com.dappslocker.bakingapp.utility.NetworkUtils;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClient {
+class RetrofitClient {
     private static Retrofit retrofit;
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

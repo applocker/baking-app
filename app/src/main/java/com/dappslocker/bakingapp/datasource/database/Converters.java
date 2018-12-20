@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class Converters {
+@SuppressWarnings("unused")
+class Converters {
+    @SuppressWarnings("unchecked")
     @TypeConverter
     public static ArrayList<Ingredient> fromJsonStringToListOfIngredients(String data) {
         if (data == null) {
@@ -25,10 +27,10 @@ public class Converters {
     @TypeConverter
     public static String fromListOfIngredientsToJson(ArrayList<Ingredient> ingredientsArrayList) {
         Gson gson = new Gson();
-        String json = gson.toJson(ingredientsArrayList);
-        return json;
+        return gson.toJson(ingredientsArrayList);
     }
 
+    @SuppressWarnings("unchecked")
     @TypeConverter
     public static ArrayList<Step> fromJsonStringToListOfSteps(String data) {
         if (data == null) {
@@ -41,7 +43,6 @@ public class Converters {
     @TypeConverter
     public static String fromListOfStepsToJson(ArrayList<Step> StepsArrayList) {
         Gson gson = new Gson();
-        String json = gson.toJson(StepsArrayList);
-        return json;
+        return gson.toJson(StepsArrayList);
     }
 }  

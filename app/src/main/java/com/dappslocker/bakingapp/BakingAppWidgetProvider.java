@@ -15,9 +15,9 @@ import com.dappslocker.bakingapp.utility.BakingAppUtils;
  */
 public class BakingAppWidgetProvider extends AppWidgetProvider {
     private static Recipe mRecipe;
-    private static Boolean isLaunchedFromWidget = false;
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                        int appWidgetId) {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
@@ -27,10 +27,9 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
          if (mRecipe != null){
              views.setTextViewText(R.id.appwidget_text,mRecipe.getName());
              Intent intent = new Intent(context, RecipeDetailActivity.class);
-             isLaunchedFromWidget = true;
              intent.putExtra(BakingAppUtils.RECIPE_ID,mRecipe.getId());
              intent.putExtra(BakingAppUtils.RECIPE_NAME,mRecipe.getName());
-             intent.putExtra(BakingAppUtils.RECIPE_LAUNCED_FROM_WIDGET,isLaunchedFromWidget);
+             intent.putExtra(BakingAppUtils.RECIPE_LAUNCED_FROM_WIDGET, true);
              pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
          }
          else{

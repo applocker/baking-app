@@ -6,12 +6,16 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class Ingredient implements Parcelable {
     @SerializedName("quantity")
+    private
     float quantity;
     @SerializedName("measure")
+    private
     String measure;
     @SerializedName("ingredient")
+    private
     String ingredient;
 
 

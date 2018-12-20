@@ -1,5 +1,6 @@
 package com.dappslocker.bakingapp;
 
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.model.Step;
 
+import java.util.Locale;
+
 
 public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapter.RecipeDetailAdapterViewHolder> {
     private final static String TAG = "RecipeDetailAdapter";
@@ -19,8 +22,8 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
     private int selectedPos = RecyclerView.NO_POSITION;
     private final RecipeDetailAdapterOnClickHandler mClickHandler;
 
-    RecipeDetailAdapter(Recipe recipe, RecipeDetailAdapterOnClickHandler clickHandler){
-        mRecipe = recipe;
+    RecipeDetailAdapter(RecipeDetailAdapterOnClickHandler clickHandler){
+        mRecipe = null;
         mClickHandler = clickHandler;
     }
 
@@ -28,15 +31,16 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
         void onClick(int position);
     }
 
+    @NonNull
     @Override
-    public RecipeDetailAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecipeDetailAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_recipe_detail, parent, false);
         return  new RecipeDetailAdapter.RecipeDetailAdapterViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(RecipeDetailAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeDetailAdapterViewHolder holder, int position) {
         //set the visibility of the views depending on position
         if(mRecipe == null){
             return;
@@ -79,7 +83,7 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
         final TextView textViewStepDescription;
         final LinearLayout linearLayoutIngridentsContainer;
 
-        public RecipeDetailAdapterViewHolder(View view) {
+        RecipeDetailAdapterViewHolder(View view) {
             super(view);
             textViewIngredients = view.findViewById(R.id.item_recipe_ingredients);
             constraintLayout = view.findViewById(R.id.item_recipe_steps_container);
@@ -101,7 +105,7 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
 
         }
 
-        public void bindView(int position) {
+        void bindView(int position) {
             if(position == 0){
                 //set visibility
                 constraintLayout.setVisibility(View.GONE);
@@ -112,7 +116,7 @@ public class RecipeDetailAdapter  extends RecyclerView.Adapter<RecipeDetailAdapt
                 Step step = mRecipe.getListOfSteps().get(position-1);
                 linearLayoutIngridentsContainer.setVisibility(View.GONE);
                 constraintLayout.setVisibility(View.VISIBLE);
-                textViewStepCount.setText(Integer.valueOf(step.getId()+1).toString());
+                textViewStepCount.setText(String.format(Locale.getDefault(),"%d",(step.getId()+1)));
                 textViewStepDescription.setText(step.getShortDescription());
                 this.itemView.setSelected(selectedPos == position);
             }

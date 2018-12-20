@@ -18,22 +18,16 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.dappslocker.bakingapp.datasource.network.GetRecipeDataService;
-import com.dappslocker.bakingapp.datasource.network.RetrofitClient;
 import com.dappslocker.bakingapp.idlingResource.SimpleIdlingResource;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.utility.BakingAppUtils;
 import com.dappslocker.bakingapp.viewmodels.AddRecipeViewModelFactory;
 import com.dappslocker.bakingapp.viewmodels.RecipeActivityViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RecipeActivity extends BaseActivity
         implements  MasterListFragment.OnRecipeClickedListener {
@@ -51,8 +45,6 @@ public class RecipeActivity extends BaseActivity
     TextView mErrorLoadingMessage;
 
     private static final String TAG = "RecipeActivity";
-    //private static final String RECIPE_ID = "recipe_id";
-    //private static final String RECIPE_NAME = "recipe_title";
     private MasterListFragment mMasterFragment;
     @Nullable
     private SimpleIdlingResource mIdlingResource;

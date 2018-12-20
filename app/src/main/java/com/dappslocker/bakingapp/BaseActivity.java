@@ -1,5 +1,6 @@
 package com.dappslocker.bakingapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,21 +14,23 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 
+@SuppressWarnings("FieldCanBeLocal")
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    FrameLayout mMasterFragmentContainer;
-    DrawerLayout mDrawer;
-    NavigationView  navigationView;
-    Toolbar toolbar;
+    private FrameLayout mMasterFragmentContainer;
+    private DrawerLayout mDrawer;
+    private NavigationView  navigationView;
+    private Toolbar toolbar;
 
-    ActionBarDrawerToggle mToggle;
+    private ActionBarDrawerToggle mToggle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView =(NavigationView)findViewById(R.id.nav_view);
-        toolbar =(Toolbar)findViewById(R.id.toolbar);
-        mMasterFragmentContainer = (FrameLayout) findViewById(R.id.fragment_container);
+        mDrawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
+        mMasterFragmentContainer = findViewById(R.id.fragment_container);
 
         setSupportActionBar(toolbar);
         mToggle = new ActionBarDrawerToggle(
@@ -76,11 +79,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     /**
      * Overrides the pending Activity transition by performing the "Enter" animation.
      */
-    protected void overridePendingTransitionEnter() { }
+    @SuppressWarnings("EmptyMethod")
+    private void overridePendingTransitionEnter() { }
     /**
      * Overrides the pending Activity transition by performing the "Exit" animation.
      */
-    protected void overridePendingTransitionExit() { }
+    @SuppressWarnings("EmptyMethod")
+    private void overridePendingTransitionExit() { }
 
     @Override
     public void onBackPressed() {
@@ -90,7 +95,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-    protected FrameLayout getMasterFragmentContainer(){
+    FrameLayout getMasterFragmentContainer(){
         return  mMasterFragmentContainer;
     }
 }
