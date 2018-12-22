@@ -293,6 +293,10 @@ public class StepDetailFragment extends Fragment {
         outState.putInt(BakingAppUtils.KEY_ZERO_INDEX,zeroIndexPosition);
     }
 
+    public int getPosition() {
+        return position;
+    }
+
     private void initializePlayer() {
         if(!isVideoInplay){
             return;

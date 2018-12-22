@@ -2,6 +2,8 @@ package com.dappslocker.bakingapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -86,6 +88,18 @@ public class DetailListFragment extends Fragment implements RecipeDetailAdapter.
         if(mRecipeDetailClickedListener != null){
             mRecipeDetailClickedListener.OnRecipeDetailClicked(position,mRecipeDetailAdapter.getRecipe());
         }
+    }
+
+    public void performViewClick(final int position) {
+        //noinspection ConstantConditions,ConstantConditions
+        mRecylerView.getLayoutManager().scrollToPosition(position);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //noinspection ConstantConditions
+                mRecylerView.findViewHolderForAdapterPosition(position).itemView.performClick();
+            }
+        },500);
     }
 
     /**

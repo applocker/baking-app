@@ -148,6 +148,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
         if(stepDetailFragment == null){
             setupViewModel(recipeId);
         }
+        if(isTwoPaneLayout){
+            setupViewModel(recipeId);
+            int stepPosition = savedInstanceState.getInt(BakingAppUtils.KEY_POSITION);
+            if(stepPosition!= 0 && detailListFragment != null){
+                detailListFragment.performViewClick(stepPosition);
+            }
+        }
     }
 
     @Override
@@ -156,6 +163,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
         getSupportFragmentManager().putFragment(outState, BakingAppUtils.KEY_DETAIL_FRAGMENT,detailListFragment);
         if(stepDetailFragment != null && stepDetailFragment.isAdded()) {
             getSupportFragmentManager().putFragment(outState, BakingAppUtils.KEY_STEP_DETAIL_FRAGMENT, stepDetailFragment);
+            outState.putInt(BakingAppUtils.KEY_POSITION,stepDetailFragment.getPosition());
         }
         super.onSaveInstanceState(outState);
     }
