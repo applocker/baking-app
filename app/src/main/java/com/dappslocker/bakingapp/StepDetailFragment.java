@@ -1,14 +1,21 @@
 package com.dappslocker.bakingapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +24,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.model.Step;
 import com.dappslocker.bakingapp.utility.BakingAppUtils;
@@ -33,6 +44,8 @@ import com.google.android.exoplayer2.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.bumptech.glide.request.RequestOptions.fitCenterTransform;
 
 @SuppressWarnings("ConstantConditions")
 public class StepDetailFragment extends Fragment {
@@ -159,12 +172,16 @@ public class StepDetailFragment extends Fragment {
             public void onClick(View v) {
                 if(!isTwoPaneLayout && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                     //start exoplayer in full screen mode on phone screens
-                    exoPlayerLaunced = true;
-                    actionBarListener.hideActionBar();
-                    playVideoLandCliCkListener.onPLayVideoLand(videoUrl);
+                   if(urlValid()){
+                       exoPlayerLaunced = true;
+                       actionBarListener.hideActionBar();
+                       playVideoLandCliCkListener.onPLayVideoLand(videoUrl);
+                   }
                 }else{
-                    PlayVideo();
-                    exoPlayerLaunced = false;
+                    if(urlValid()){
+                        PlayVideo();
+                        exoPlayerLaunced = false;
+                    }
                 }
 
             }
@@ -173,6 +190,7 @@ public class StepDetailFragment extends Fragment {
         mImageButtonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                position--;
                 zeroIndexPosition = --zeroIndexPosition <= 0 ? 0:zeroIndexPosition;
                 ShowVideoPlayButton();
                 updateViews();
@@ -189,6 +207,7 @@ public class StepDetailFragment extends Fragment {
          mImageButtonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                position++;
                 zeroIndexPosition = (++zeroIndexPosition >= mTotalSteps - 1)? mTotalSteps - 1:zeroIndexPosition;
                 ShowVideoPlayButton();
                 updateViews();
@@ -202,6 +221,32 @@ public class StepDetailFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private boolean urlValid() {
+        boolean isUrlValid = !videoUrl.equals("");
+        if(!isUrlValid){
+            showErrorUrlDialog();
+        }
+        return isUrlValid;
+    }
+
+    private void showErrorUrlDialog() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(context);
+        }
+        builder.setTitle(getResources().getString(R.string.invalid_url_error_title))
+                .setMessage(getResources().getString(R.string.invalid_url_error_message))
+                .setPositiveButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void PlayVideo() {
@@ -224,15 +269,17 @@ public class StepDetailFragment extends Fragment {
         isVideoInplay = false;
     }
 
+
+
     private void updateViews() {
         int deviceOrientation = getResources().getConfiguration().orientation;
-        Step mStep;
+        Step step;
         if (deviceOrientation == Configuration.ORIENTATION_LANDSCAPE && isVideoInplay) {
             showVideoInFullScreen();
             actionBarListener.hideActionBar();
             //get the video url
-            mStep = mRecipe.getListOfSteps().get(zeroIndexPosition);
-            videoUrl = mStep.getVideoURL();
+            step = mRecipe.getListOfSteps().get(zeroIndexPosition);
+            videoUrl = step.getVideoURL();
             //restore play video container
             if(isVideoInplay){
                 PlayVideo();
@@ -249,23 +296,29 @@ public class StepDetailFragment extends Fragment {
                 mImageButtonNext.setVisibility(View.VISIBLE);
             }
             //update view steps
-            mStep = mRecipe.getListOfSteps().get(zeroIndexPosition);
-            CharSequence text = getResources().getString(R.string.step) + " " + mStep.getId();
+            step = mRecipe.getListOfSteps().get(zeroIndexPosition);
+            CharSequence text = getResources().getString(R.string.step) + " " + step.getId();
             mTextViewStep.setText(text);
-            mTextViewStepDescription.setText(mStep.getDescription());
+            mTextViewStepDescription.setText(step.getDescription());
             //restore play video container
             if(isVideoInplay){
                 PlayVideo();
             }
             else{
-                videoUrl = mStep.getVideoURL();
+                videoUrl = step.getVideoURL();
                 if(videoUrl.isEmpty()){
-                    mImageButtonMediaPlayer.setVisibility(View.GONE);
-                    mNoMedia.setVisibility(View.VISIBLE);
+                    //show thumbnail if one exists for the video else we display the play button
+                    String thumbnailURL= step.getThumbnailURL();
+                    if(!thumbnailURL.equals("")){
+                        mNoMedia.setVisibility(View.GONE);
+                        displayVideoThumbnail(thumbnailURL);
+                    }else{
+                        mImageButtonMediaPlayer.setVisibility(View.GONE);
+                        mNoMedia.setVisibility(View.VISIBLE);
+                    }
                 }
                 else{
-                    mNoMedia.setVisibility(View.GONE);
-                    mImageButtonMediaPlayer.setVisibility(View.VISIBLE);
+                    displayPlayButtonImage();
                 }
             }
 
@@ -275,6 +328,34 @@ public class StepDetailFragment extends Fragment {
             exoPlayerLaunced = false;
         }
     }
+
+    private void displayPlayButtonImage() {
+        mNoMedia.setVisibility(View.GONE);
+        mImageButtonMediaPlayer.setVisibility(View.VISIBLE);
+        mImageButtonMediaPlayer.setBackground(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
+        mImageButtonMediaPlayer.setImageResource(R.mipmap.ic_play_arrow_black_24dp);
+    }
+
+    private void displayVideoThumbnail(String thumbnailURL) {
+        float width = getResources().getDimension(R.dimen.play_button_width);
+        float height =  getResources().getDimension(R.dimen.play_button_height);
+
+        @SuppressWarnings({"unused", "unchecked"}) Target target =
+                Glide.with(getActivity())
+                        .asBitmap()
+                        .load(thumbnailURL)
+                        .apply(fitCenterTransform())
+                        .into(new SimpleTarget((int)width, (int)height) {
+
+                            @Override
+                            public void onResourceReady(@NonNull Object resource, @Nullable Transition transition) {
+                                Drawable drawable = new BitmapDrawable(context.getResources(), (Bitmap) resource);
+                                mImageButtonMediaPlayer.setBackground(drawable);
+                                mImageButtonMediaPlayer.setImageResource(R.mipmap.ic_play_arrow_black_24dp);
+                            }
+                        });
+    }
+
 
     private void showVideoInFullScreen() {
         mStepDescriptionContainer.setVisibility(View.GONE);

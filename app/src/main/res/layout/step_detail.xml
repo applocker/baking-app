@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalPrevNext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalDescription"
-        app:srcCompat="@drawable/ic_skip_previous_black_24dp" />
+        app:srcCompat="@mipmap/ic_skip_previous_black_24dp" />
 
     <ImageButton
         android:id="@+id/imageButtonNext"
@@ -77,15 +77,15 @@
         android:layout_marginStart="@dimen/layout_margin_96"
         android:layout_marginLeft="@dimen/layout_margin_96"
         android:layout_marginTop="@dimen/layout_margin_8"
-        android:layout_marginEnd="@dimen/layout_margin_8"
-        android:layout_marginRight="@dimen/layout_margin_8"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="@dimen/layout_margin_8"
+        android:contentDescription="@string/next_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineVerticalPrevNext"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalDescription"
-        app:srcCompat="@drawable/ic_skip_next_black_24dp"
-        android:contentDescription="@string/next_button" />
+        app:srcCompat="@mipmap/ic_skip_next_black_24dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guidelineVerticalPrevNext"

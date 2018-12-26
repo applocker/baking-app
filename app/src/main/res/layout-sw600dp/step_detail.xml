@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -51,11 +50,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
+        app:layout_constraintGuide_percent="0.85" />
 
     <ImageButton
         android:id="@+id/imageButtonPrevious"
-        android:layout_width="@dimen/margin_none"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/layout_margin_16"
         android:layout_marginLeft="@dimen/layout_margin_16"
@@ -63,27 +62,29 @@
         android:layout_marginEnd="192dp"
         android:layout_marginRight="192dp"
         android:contentDescription="@string/previous_button"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalPrevNext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalDescription"
-        app:srcCompat="@drawable/ic_skip_previous_black_24dp" />
+        app:srcCompat="@mipmap/ic_skip_previous_black_24dp" />
 
     <ImageButton
         android:id="@+id/imageButtonNext"
-        android:layout_width="@dimen/margin_none"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="192dp"
         android:layout_marginLeft="192dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="@dimen/layout_margin_8"
-        android:layout_marginRight="@dimen/layout_margin_8"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:contentDescription="@string/next_button"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineVerticalPrevNext"
         app:layout_constraintTop_toTopOf="@+id/guidelineHorizontalDescription"
-        app:srcCompat="@drawable/ic_skip_next_black_24dp" />
+        app:srcCompat="@mipmap/ic_skip_next_black_24dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guidelineVerticalPrevNext"
@@ -114,7 +115,6 @@
 
         <LinearLayout
             android:id="@+id/linearLayoutContainerVideoPlayer"
-            android:orientation="vertical"
             android:layout_width="@dimen/margin_none"
             android:layout_height="@dimen/margin_none"
             android:layout_marginStart="@dimen/layout_margin_96"
@@ -123,10 +123,12 @@
             android:layout_marginEnd="@dimen/layout_margin_96"
             android:layout_marginRight="@dimen/layout_margin_96"
             android:layout_marginBottom="@dimen/layout_margin_32"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <include layout="@layout/video_player" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
