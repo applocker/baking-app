@@ -1,34 +1,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutWidgetContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
     android:layout_margin="@dimen/layout_margin_8"
-    android:orientation="horizontal"
-    android:padding="@dimen/widget_margin">
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin_zero">
 
-    <ImageView
-        android:id="@+id/imageViewWidgetChefHat"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/linearLayoutWidgetStepsTitleContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:contentDescription="@string/app_logo"
-        android:src="@drawable/ic_chef_hat_64" />
-
-    <TextView
-        android:id="@+id/appwidget_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_weight="2"
-        android:contentDescription="@string/appwidget_text"
-        android:gravity="fill_horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/layout_margin_8"
         android:paddingRight="@dimen/layout_margin_8"
-        android:text="@string/appwidget_text"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize_small"
-        android:textStyle="bold"
-        tools:text="Yellow Cake" />
+        android:paddingStart="@dimen/layout_margin_8"
+        android:paddingEnd="@dimen/layout_margin_8"
+        tools:background="@color/colorPrimaryLight">
 
+        <ImageView
+            android:id="@+id/imageViewWidgetChefHat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:contentDescription="@string/app_logo"
+            android:src="@drawable/ic_chef_hat_64" />
+
+        <TextView
+            android:id="@+id/appwidget_text_recipe_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:contentDescription="@string/appwidget_text"
+            android:gravity="fill_horizontal"
+            android:paddingLeft="@dimen/layout_margin_16"
+            android:paddingRight="@dimen/widget_margin_zero"
+            android:paddingStart="@dimen/layout_margin_16"
+            android:paddingEnd="@dimen/widget_margin_zero"
+            android:text="@string/appwidget_text"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSize_medium"
+            android:textStyle="bold"
+            tools:text="Yellow Cake"
+            tools:textColor="@color/colorBlack" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutWidgetStepsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/layout_margin_8"
+        android:paddingRight="@dimen/layout_margin_8">
+
+    </LinearLayout>
 
 </LinearLayout>

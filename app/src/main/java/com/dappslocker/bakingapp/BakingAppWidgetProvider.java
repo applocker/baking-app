@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
+import com.dappslocker.bakingapp.model.Ingredient;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.utility.BakingAppUtils;
 
@@ -22,10 +23,18 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
         //clear any previous text
-        views.setTextViewText(R.id.appwidget_text,"");
+        views.setTextViewText(R.id.appwidget_text_recipe_title,"");
         PendingIntent pendingIntent;
          if (mRecipe != null){
-             views.setTextViewText(R.id.appwidget_text,mRecipe.getName());
+             //set the title
+             views.setTextViewText(R.id.appwidget_text_recipe_title,mRecipe.getName());
+             //remove the views from R.id.linearLayoutWidgetStepsContainer
+             views.removeAllViews (R.id.linearLayoutWidgetStepsContainer);
+             //add the new vies containing the steps for the current recipe
+             for(Ingredient ingredient: mRecipe.getListOfIngredients()){
+                 views.addView(R.id.linearLayoutWidgetStepsContainer,createViewForStep(context,ingredient));
+             }
+
              Intent intent = new Intent(context, RecipeDetailActivity.class);
              intent.putExtra(BakingAppUtils.RECIPE_ID,mRecipe.getId());
              intent.putExtra(BakingAppUtils.RECIPE_NAME,mRecipe.getName());
@@ -37,10 +46,18 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
              pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
          }
-        views.setOnClickPendingIntent(R.id.imageViewWidgetChefHat,pendingIntent);
+        views.setOnClickPendingIntent(R.id.linearLayoutWidgetStepsTitleContainer,pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    private static RemoteViews createViewForStep(Context context, Ingredient ingredient) {
+
+        RemoteViews ingredientItem = new RemoteViews(context.getPackageName(), R.layout.widget_ingridient_list_item);
+        String ingredientItemDetail = ingredient.getQuantity() + " " + ingredient.getMeasure() + " " + ingredient.getIngredient();
+        ingredientItem.setTextViewText(R.id.appwidget_text_ingridient_item, ingredientItemDetail);
+        return ingredientItem;
     }
 
     @Override
