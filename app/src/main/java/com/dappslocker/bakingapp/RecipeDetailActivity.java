@@ -29,6 +29,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
     private StepDetailFragment stepDetailFragment;
     private boolean isTwoPaneLayout;
     private static Recipe widgetRecipe = null;
+    private boolean wasClickedOnConfigChange = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +122,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
             ingredientsFrament.show(getSupportFragmentManager(),"Ingredients Fragment");
         }
         else{
+            if(isTwoPaneLayout && wasClickedOnConfigChange){
+                wasClickedOnConfigChange = false;
+                return;
+            }
             String Tag = StepDetailFragment.class.getSimpleName();
             stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().findFragmentByTag(Tag);
             if(stepDetailFragment == null){
@@ -152,7 +157,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements DetailLis
             setupViewModel(recipeId);
             int stepPosition = savedInstanceState.getInt(BakingAppUtils.KEY_POSITION);
             if(stepPosition!= 0 && detailListFragment != null){
+                wasClickedOnConfigChange = true;
                 detailListFragment.performViewClick(stepPosition);
+
             }
         }
     }

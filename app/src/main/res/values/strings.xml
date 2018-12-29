@@ -41,8 +41,6 @@
     <string name="nav_recipes">Recipes</string>
     <string name="nav_credits">Credits</string>
     <string name="nav_about">About</string>
-    <string name="thumbnail_error_message">There was an error retreiving the video thumbnail, reverting to default image</string>
-    <string name="thumbnail_error_title">Video thumbnail error</string>
     <string name="nav_info">Info</string>
     <string name="invalid_url_error_title">Video URL</string>
     <string name="invalid_url_error_message">The video url is not valid</string>

@@ -180,7 +180,7 @@ public class StepDetailFragment extends Fragment {
                 }else{
                     if(urlValid()){
                         PlayVideo();
-                        exoPlayerLaunced = false;
+                        exoPlayerLaunced = true;
                     }
                 }
 
@@ -265,8 +265,8 @@ public class StepDetailFragment extends Fragment {
         mPlayVideoOrShowNoMediaContainer.setVisibility(View.VISIBLE);
         //show the exoplayer container
         mExoPlayerVideoViewContainer.setVisibility(View.GONE);
-        //begin playing the video
         isVideoInplay = false;
+        exoPlayerLaunced = false;
     }
 
 
@@ -275,8 +275,10 @@ public class StepDetailFragment extends Fragment {
         int deviceOrientation = getResources().getConfiguration().orientation;
         Step step;
         if (deviceOrientation == Configuration.ORIENTATION_LANDSCAPE && isVideoInplay) {
-            showVideoInFullScreen();
-            actionBarListener.hideActionBar();
+            if(!isTwoPaneLayout){
+                showVideoInFullScreen();
+                actionBarListener.hideActionBar();
+            }
             //get the video url
             step = mRecipe.getListOfSteps().get(zeroIndexPosition);
             videoUrl = step.getVideoURL();
@@ -322,10 +324,6 @@ public class StepDetailFragment extends Fragment {
                 }
             }
 
-        }
-        //noinspection PointlessBooleanExpression
-        if(exoPlayerLaunced == true){
-            exoPlayerLaunced = false;
         }
     }
 

@@ -50,6 +50,7 @@ public class ExoPlayerFragment extends Fragment {
         return rootView;
     }
 
+
     private void initializePlayer() {
         player = ExoPlayerFactory.newSimpleInstance(
                 new DefaultRenderersFactory(getActivity()),
@@ -93,6 +94,13 @@ public class ExoPlayerFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            initializePlayer();
+        }
+    }
     private void releasePlayer() {
         if (player != null) {
             playbackPosition = player.getCurrentPosition();
