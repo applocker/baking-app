@@ -46,15 +46,16 @@
             tools:textColor="@color/colorBlack" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayoutWidgetStepsContainer"
+    <ListView
+        android:id="@+id/listViewWidgetIngredientsItemsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
-        android:orientation="vertical"
+        android:dividerHeight="1dp"
         android:paddingLeft="@dimen/layout_margin_8"
-        android:paddingRight="@dimen/layout_margin_8">
+        android:paddingRight="@dimen/layout_margin_8"
+        tools:listitem="@layout/widget_ingridient_list_item">
 
-    </LinearLayout>
+    </ListView>
 
 </LinearLayout>

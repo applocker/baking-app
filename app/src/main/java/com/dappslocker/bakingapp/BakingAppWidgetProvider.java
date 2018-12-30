@@ -11,11 +11,14 @@ import com.dappslocker.bakingapp.model.Ingredient;
 import com.dappslocker.bakingapp.model.Recipe;
 import com.dappslocker.bakingapp.utility.BakingAppUtils;
 
+import java.util.ArrayList;
+
 /**
  * Implementation of App Widget functionality.
  */
 public class BakingAppWidgetProvider extends AppWidgetProvider {
     private static Recipe mRecipe;
+    private static ArrayList<String> listOfIngredients;
 
     private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                         int appWidgetId) {
@@ -28,12 +31,14 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
          if (mRecipe != null){
              //set the title
              views.setTextViewText(R.id.appwidget_text_recipe_title,mRecipe.getName());
-             //remove the views from R.id.linearLayoutWidgetStepsContainer
-             views.removeAllViews (R.id.linearLayoutWidgetStepsContainer);
-             //add the new vies containing the steps for the current recipe
+             listOfIngredients =  new ArrayList<>();
+             listOfIngredients.clear();
              for(Ingredient ingredient: mRecipe.getListOfIngredients()){
-                 views.addView(R.id.linearLayoutWidgetStepsContainer,createViewForStep(context,ingredient));
+                 listOfIngredients.add(createViewForStep(ingredient));
              }
+             //create intent for the service
+             Intent intentBakingAppService = new Intent(context, BakingAppWidgetService.class);
+             views.setRemoteAdapter(R.id.listViewWidgetIngredientsItemsContainer, intentBakingAppService);
 
              Intent intent = new Intent(context, RecipeDetailActivity.class);
              intent.putExtra(BakingAppUtils.RECIPE_ID,mRecipe.getId());
@@ -44,20 +49,19 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
          else{
              Intent intent = new Intent(context, RecipeActivity.class);
              pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
          }
         views.setOnClickPendingIntent(R.id.linearLayoutWidgetStepsTitleContainer,pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        if (mRecipe != null){
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.listViewWidgetIngredientsItemsContainer);
+        }
+
     }
 
-    private static RemoteViews createViewForStep(Context context, Ingredient ingredient) {
-
-        RemoteViews ingredientItem = new RemoteViews(context.getPackageName(), R.layout.widget_ingridient_list_item);
-        String ingredientItemDetail = ingredient.getQuantity() + " " + ingredient.getMeasure() + " " + ingredient.getIngredient();
-        ingredientItem.setTextViewText(R.id.appwidget_text_ingridient_item, ingredientItemDetail);
-        return ingredientItem;
+    private static String createViewForStep( Ingredient ingredient) {
+        return ingredient.getQuantity() + " " + ingredient.getMeasure() + " " + ingredient.getIngredient();
     }
 
     @Override
@@ -87,6 +91,10 @@ public class BakingAppWidgetProvider extends AppWidgetProvider {
          for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+    }
+
+    public static ArrayList<String> getListOfIngredients() {
+        return listOfIngredients;
     }
 }
 
